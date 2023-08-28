@@ -9,6 +9,11 @@ declare namespace NodeJS {
     readonly REFRESH_TOKEN_SECRET: string;
     readonly REFRESH_TOKEN_EXPIRE: string;
     readonly DATABASE_URL: string;
+    readonly DB_USER: string;
+    readonly DB_PASSWORD: string;
+    readonly DB_DATABASE: string;
+    readonly DB_PORT: string;
+    readonly DB_HOST: string;
     readonly SMTP_HOST: string;
     readonly SMTP_PORT: string;
     readonly SMTP_USERNAME: string;
