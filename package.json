@@ -11,15 +11,8 @@
     "build": "tsc --project './tsconfig.build.json'",
     "start": "yarn run build && NODE_ENV=production node --trace-warnings ./dist/index.js",
     "watch": "tsc --project './tsconfig.build.json' --watch",
-    "lint": "eslint src/**/*.ts __test__/**/*.test.ts",
-    "lint:fix": "eslint --fix --ext .",
-    "prettier:format": "prettier --write .",
-    "prettier:check": "prettier --check .",
-    "prettier:format:file": "prettier --write ",
-    "test": "jest",
-    "test:watch": "jest -i --watchAll",
-    "coverage": "jest -i --coverage",
-    "prepare": "husky install"
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:new": "npx sequelize-cli migration:create --name "
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
@@ -36,6 +29,9 @@
     "joi": "^17.8.4",
     "jsonwebtoken": "^9.0.0",
     "nodemailer": "^6.9.1",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.32.1",
     "ts-node": "^10.9.1",
     "utility-types": "^3.10.0",
     "uuid": "^9.0.0",
@@ -71,6 +67,7 @@
     "prettier": "^2.8.4",
     "prettier-eslint": "^15.0.1",
     "prisma": "^4.11.0",
+    "sequelize-cli": "^6.6.1",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",
     "typescript": "5.0.2"
