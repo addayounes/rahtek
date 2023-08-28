@@ -1,5 +1,8 @@
-import authRouter from './auth.route';
-import passwordRouter from './password.route';
-import verifyEmailRouter from './verifyEmail.route';
+import { Router } from "express";
+import authRouter from "./auth.route";
 
-export { authRouter, verifyEmailRouter, passwordRouter };
+const mainRouter = Router();
+
+mainRouter.use("/auth", authRouter);
+
+export { mainRouter };
