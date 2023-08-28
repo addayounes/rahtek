@@ -7,6 +7,7 @@ import {
   signupSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+  refershSchema,
 } from "../../validations/auth.validation";
 
 const authRouter = Router();
@@ -15,9 +16,17 @@ authRouter.post("/signup", validate(signupSchema), authController.handleSignUp);
 
 authRouter.post("/login", validate(loginSchema), authController.handleLogin);
 
-authRouter.post("/logout", authController.handleLogout);
+authRouter.post(
+  "/logout",
+  validate(refershSchema),
+  authController.handleLogout
+);
 
-authRouter.post("/refresh", authController.handleRefresh);
+authRouter.post(
+  "/refresh",
+  validate(refershSchema),
+  authController.handleRefresh
+);
 
 authRouter.post(
   "/forgot-password",

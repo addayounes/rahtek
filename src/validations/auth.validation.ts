@@ -20,6 +20,12 @@ export const loginSchema = {
   }),
 };
 
+export const refershSchema = {
+  body: Joi.object().keys({
+    token: Joi.string().required().min(6),
+  }),
+};
+
 export const forgotPasswordSchema = {
   body: Joi.object<EmailRequestBody>().keys({
     email: Joi.string().required().email(),
