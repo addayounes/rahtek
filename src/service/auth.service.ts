@@ -52,7 +52,7 @@ export const login = async (email: string, password: string) => {
   // delete user's old sessions
   await tokenService.deleteUserRefreshTokens(user.id);
 
-  const newTokens = await generateTokens(user.userId);
+  const newTokens = await generateTokens(user.id);
 
   // send access token per json to user so it can be stored in the localStorage
   return { user, ...newTokens };
