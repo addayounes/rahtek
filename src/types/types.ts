@@ -1,6 +1,6 @@
-import type { NextFunction, Request, Response } from 'express';
-import type { DeepPartial } from 'utility-types';
-import type { IFilterXSSOptions } from 'xss';
+import type { NextFunction, Request, Response } from "express";
+import type { DeepPartial } from "utility-types";
+import type { IFilterXSSOptions } from "xss";
 
 // See this for the following types
 // https://stackoverflow.com/questions/34508081/how-to-add-typescript-definitions-to-express-req-res
@@ -43,12 +43,13 @@ export type ExpressMiddleware<
 //   res.json({ message: 'you have signed up' }) // strongly typed response obj
 // };
 export interface UserSignUpCredentials {
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }
 
-export type UserLoginCredentials = Omit<UserSignUpCredentials, 'username'>;
+export type UserLoginCredentials = Omit<UserSignUpCredentials, "username">;
 
 export interface EmailRequestBody {
   email: string;
@@ -67,5 +68,5 @@ export type Sanitized<T> = T extends (...args: unknown[]) => unknown
   : T;
 
 export type SanitizeOptions = IFilterXSSOptions & {
-  whiteList?: IFilterXSSOptions['whiteList'];
+  whiteList?: IFilterXSSOptions["whiteList"];
 };

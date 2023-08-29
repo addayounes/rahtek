@@ -1,20 +1,18 @@
 import Joi from "joi";
-import type {
-  UserLoginCredentials,
-  UserSignUpCredentials,
-} from "../types/types";
 import type { EmailRequestBody } from "../types/types";
+import { IUserAttributes } from "../models/user";
 
 export const signupSchema = {
-  body: Joi.object<UserSignUpCredentials>().keys({
+  body: Joi.object<Omit<IUserAttributes, "id">>().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(6),
-    username: Joi.string().required().min(2),
+    firstName: Joi.string().required().min(2),
+    lastName: Joi.string().required().min(2),
   }),
 };
 
 export const loginSchema = {
-  body: Joi.object<UserLoginCredentials>().keys({
+  body: Joi.object<Pick<IUserAttributes, "email" | "password">>().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(6),
   }),

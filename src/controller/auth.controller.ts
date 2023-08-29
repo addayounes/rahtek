@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import httpStatus from "http-status";
 import type { Request, Response } from "express";
+import { IUserAttributes } from "../models/user";
 import * as authService from "../service/auth.service";
-import type { UserSignUpCredentials } from "../types/types";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -10,7 +10,9 @@ const { verify } = jwt;
 
 export const handleSignUp = async (req: Request, res: Response) => {
   try {
-    const user = await authService.signUp(req.body as UserSignUpCredentials);
+    const user = await authService.signUp(
+      req.body as Omit<IUserAttributes, "id">
+    );
     if (!user)
       res
         .status(httpStatus.CONFLICT)

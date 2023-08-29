@@ -2,60 +2,55 @@ import jwt from "jsonwebtoken";
 import * as argon2 from "argon2";
 import config from "../config/config";
 import logger from "../middleware/logger";
-import prismaClient from "../config/prisma";
 import * as tokenService from "./token.service";
 import { UserSignUpCredentials } from "../types/types";
 import {
   createAccessToken,
   createRefreshToken,
 } from "../utils/generateTokens.util";
+import { User } from "../models/user";
+import { randomUUID } from "crypto";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 const { verify } = jwt;
 
 export const signUp = async (userData: UserSignUpCredentials) => {
-  const { username, email, password } = userData;
+  const { firstName, lastName, email, password } = userData;
 
-  const userEmailExists = await prismaClient.user.findUnique({
-    where: {
-      email,
-    },
+  const userEmailExists = await User.findOne({ where: { email }, raw: true });
+
+  if (userEmailExists?.dataValues) return null;
+
+  const newUser = await User.create({
+    id: randomUUID(),
+    email,
+    firstName,
+    lastName,
+    password,
   });
 
-  if (userEmailExists) return null;
+  const tokens = await generateTokens(newUser.dataValues.id);
 
-  const hashedPassword = await argon2.hash(password);
-
-  const newUser = await prismaClient.user.create({
-    data: {
-      email,
-      name: username,
-      password: hashedPassword,
-    },
-  });
-
-  return newUser;
+  return { user: newUser, ...tokens };
 };
 
 export const login = async (email: string, password: string) => {
-  const user = await prismaClient.user.findUnique({
-    where: { email },
-  });
+  const user = await User.findOne({ where: { email } });
 
-  if (!user) return { message: "User not found" };
+  if (!user?.dataValues) return { message: "User not found" };
 
-  const validPassword = await argon2.verify(user.password, password);
+  const validPassword = await argon2.verify(user.dataValues.password, password);
 
   if (!validPassword) return { message: "Wrong password" };
 
   // delete user's old sessions
-  await tokenService.deleteUserRefreshTokens(user.id);
+  await tokenService.deleteUserRefreshTokens(user.dataValues.id);
 
-  const newTokens = await generateTokens(user.id);
+  const newTokens = await generateTokens(user.dataValues.id);
 
   // send access token per json to user so it can be stored in the localStorage
-  return { user, ...newTokens };
+  return { user: user.dataValues, ...newTokens };
 };
 
 export const logout = async (token: string) => {

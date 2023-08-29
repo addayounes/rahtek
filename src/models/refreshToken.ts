@@ -1,14 +1,16 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
 
-interface IRefreshTokenAttributes {
+export interface IRefreshTokenAttributes {
   id: number;
   token: string;
   userId: string;
 }
 
-export const RefreshToken = sequelize.define<Model<IRefreshTokenAttributes>>(
-  "RefreshToken",
+export const RefreshToken = sequelize.define<
+  Model<IRefreshTokenAttributes, {}>
+>(
+  "RefreshTokens",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -20,7 +22,7 @@ export const RefreshToken = sequelize.define<Model<IRefreshTokenAttributes>>(
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: { model: "User", key: "id" },
+      references: { model: "Users", key: "id" },
     },
   },
   { tableName: "RefreshTokens" }

@@ -13,6 +13,4 @@ const sequelize = new Sequelize(db.database, db.username, db.password, {
 
 logger.info("Connected to DB");
 
-sequelize.sync({ force: true }).then(() => logger.info("Synced DB"));
-
 export default sequelize;

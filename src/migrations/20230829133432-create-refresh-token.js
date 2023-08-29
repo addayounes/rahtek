@@ -4,7 +4,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      "RefreshToken",
+      "RefreshTokens",
       {
         id: {
           type: Sequelize.INTEGER,
