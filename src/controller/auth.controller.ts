@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import httpStatus from "http-status";
 import type { Request, Response } from "express";
-import * as authService from "src/service/auth.service";
+import * as authService from "../service/auth.service";
 import type { UserSignUpCredentials } from "../types/types";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

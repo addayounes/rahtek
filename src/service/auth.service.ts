@@ -1,14 +1,14 @@
 import jwt from "jsonwebtoken";
 import * as argon2 from "argon2";
-import config from "src/config/config";
-import logger from "src/middleware/logger";
-import prismaClient from "src/config/prisma";
+import config from "../config/config";
+import logger from "../middleware/logger";
+import prismaClient from "../config/prisma";
 import * as tokenService from "./token.service";
-import { UserSignUpCredentials } from "src/types/types";
+import { UserSignUpCredentials } from "../types/types";
 import {
   createAccessToken,
   createRefreshToken,
-} from "src/utils/generateTokens.util";
+} from "../utils/generateTokens.util";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error

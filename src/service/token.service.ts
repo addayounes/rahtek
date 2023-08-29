@@ -1,4 +1,4 @@
-import prismaClient from "src/config/prisma";
+import prismaClient from "../config/prisma";
 
 export const saveRefreshToken = async (token: string, userId: string) => {
   await prismaClient.refreshToken.create({ data: { token, userId } });
