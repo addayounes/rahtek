@@ -10,6 +10,7 @@ import {
 } from "../utils/generateTokens.util";
 import { User } from "../models/user";
 import { randomUUID } from "crypto";
+import { TokenType } from "../types/token";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -54,15 +55,15 @@ export const login = async (email: string, password: string) => {
 };
 
 export const logout = async (token: string) => {
-  const tokenExists = await tokenService.getRefreshToken(token);
+  const tokenExists = await tokenService.getToken(token);
   if (!tokenExists) return null;
-  await tokenService.deleteRefreshToken(token);
+  await tokenService.deleteToken(token);
   return true;
 };
 
 export const refresh = async (refreshToken: string) => {
   // delete from db
-  await tokenService.deleteRefreshToken(refreshToken);
+  await tokenService.deleteToken(refreshToken);
 
   // evaluate jwt
   const tokenPayload = verify(refreshToken, config.jwt.refresh_token.secret);
@@ -81,10 +82,44 @@ export const generateTokens = async (userId: string) => {
     const refreshToken = createRefreshToken(userId);
 
     // add refresh token to db
-    await tokenService.saveRefreshToken(refreshToken, userId);
+    await tokenService.saveToken(refreshToken, userId, TokenType.REFRESH);
 
     return { accessToken, refreshToken };
   } catch (error) {
     logger.error(error);
   }
+};
+
+export const forgotPassword = async (email: string) => {
+  const user = await User.findOne({ where: { email } });
+
+  if (!user?.dataValues) return { message: "User doesn't exist" };
+
+  const resetToken = createAccessToken(user.dataValues.id);
+
+  await tokenService.saveToken(resetToken, user.dataValues.id, TokenType.RESET);
+
+  // TODO: send an email with the link of the reset page
+
+  return resetPassword;
+};
+
+export const resetPassword = async (password: string, token: string) => {
+  const resetToken = await tokenService.getToken(token, {
+    expiresAt: { $gt: new Date() },
+  });
+
+  if (!resetToken) return { message: "Invalid or expired token" };
+
+  const user = await User.findOne({ where: { id: resetToken.userId } });
+
+  if (!user) return { message: "Couldn't find the user" };
+
+  const hashed = await argon2.hash(password);
+
+  user.update({ password: hashed });
+
+  await tokenService.deleteToken(resetToken.token);
+
+  return { message: "Password reset successful", success: true };
 };
