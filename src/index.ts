@@ -3,7 +3,7 @@ import config from "./config/config";
 import sequelize from "./config/sequelize";
 import logger from "./middleware/logger";
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync().then(() => {
   const server = app.listen(Number(config.server.port), () => {
     logger.log("info", `Server is running on Port: ${config.server.port}`);
   });
