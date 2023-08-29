@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
-import path from "path";
-import Joi from "joi";
+import { resolve } from "path";
+import * as Joi from "joi";
 
 dotenv.config({
-  path: path.resolve(__dirname, "../../.env"),
+  path: resolve(__dirname, "../../.env"),
 });
 
 const envSchema = Joi.object().keys({
@@ -21,11 +21,6 @@ const envSchema = Joi.object().keys({
   DB_DATABASE: Joi.string().required(),
   DB_PORT: Joi.string().required(),
   DB_HOST: Joi.string().required(),
-  SMTP_HOST: Joi.string().required(),
-  SMTP_PORT: Joi.string().default("587"),
-  SMTP_USERNAME: Joi.string().required(),
-  SMTP_PASSWORD: Joi.string().required(),
-  EMAIL_FROM: Joi.string().email().required(),
 });
 
 const { value: validatedEnv, error } = envSchema
@@ -58,17 +53,6 @@ const config = {
       secret: validatedEnv.REFRESH_TOKEN_SECRET,
       expire: validatedEnv.REFRESH_TOKEN_EXPIRE,
     },
-  },
-  email: {
-    smtp: {
-      host: validatedEnv.SMTP_HOST,
-      port: validatedEnv.SMTP_PORT,
-      auth: {
-        username: validatedEnv.SMTP_USERNAME,
-        password: validatedEnv.SMTP_PASSWORD,
-      },
-    },
-    from: validatedEnv.EMAIL_FROM,
   },
   database: {
     username: validatedEnv.DB_USER,
