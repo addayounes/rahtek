@@ -32,6 +32,7 @@ export const RefreshToken = sequelize.define<
       type: DataTypes.UUID,
       allowNull: false,
       references: { model: "Users", key: "id" },
+      onDelete: "CASCADE",
     },
   },
   { tableName: "RefreshTokens" }

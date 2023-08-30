@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import jwt from "jsonwebtoken";
 import * as argon2 from "argon2";
 import config from "../config/config";
@@ -17,63 +18,94 @@ import { TokenType } from "../types/token";
 const { verify } = jwt;
 
 export const signUp = async (userData: UserSignUpCredentials) => {
-  const { firstName, lastName, email, password } = userData;
+  const { email, password } = userData;
 
-  const userEmailExists = await User.findOne({ where: { email }, raw: true });
+  try {
+    const userEmailExists = await User.findOne({ where: { email }, raw: true });
 
-  if (userEmailExists?.dataValues) return null;
+    if (userEmailExists?.dataValues) return null;
 
-  const newUser = await User.create({
-    id: randomUUID(),
-    email,
-    firstName,
-    lastName,
-    password,
-  });
+    const hashed = await argon2.hash(password);
 
-  const tokens = await generateTokens(newUser.dataValues.id);
+    const newUser: any = await User.create({
+      ...userData,
+      id: randomUUID(),
+      password: hashed,
+    });
 
-  return { user: newUser, ...tokens };
+    const tokens = await generateTokens(newUser.dataValues.id);
+
+    delete newUser.dataValues.password;
+
+    return { user: newUser.dataValues, ...tokens };
+  } catch (error) {
+    logger.error(error);
+    return null;
+  }
 };
 
 export const login = async (email: string, password: string) => {
-  const user = await User.findOne({ where: { email } });
+  try {
+    const user: any = await User.findOne({ where: { email } });
 
-  if (!user?.dataValues) return { message: "User not found" };
+    if (!user?.dataValues) return { message: "User not found" };
 
-  const validPassword = await argon2.verify(user.dataValues.password, password);
+    const validPassword = await argon2.verify(
+      user.dataValues.password,
+      password
+    );
 
-  if (!validPassword) return { message: "Wrong password" };
+    if (!validPassword) return { message: "Wrong password" };
 
-  // delete user's old sessions
-  await tokenService.deleteUserRefreshTokens(user.dataValues.id);
+    // delete user's old sessions
+    await tokenService.deleteUserRefreshTokens(user.dataValues.id);
 
-  const newTokens = await generateTokens(user.dataValues.id);
+    const newTokens = await generateTokens(user.dataValues.id);
 
-  // send access token per json to user so it can be stored in the localStorage
-  return { user: user.dataValues, ...newTokens };
+    delete user.dataValues.password;
+
+    // send access token per json to user so it can be stored in the localStorage
+    return { user: user.dataValues, ...newTokens };
+  } catch (error) {
+    logger.error(error);
+    return null;
+  }
 };
 
 export const logout = async (token: string) => {
-  const tokenExists = await tokenService.getToken(token);
-  if (!tokenExists) return null;
-  await tokenService.deleteToken(token);
-  return true;
+  try {
+    const tokenExists = await tokenService.getToken(token);
+    if (!tokenExists) return null;
+    await tokenService.deleteToken(token);
+    return true;
+  } catch (error) {
+    logger.error(error);
+    return null;
+  }
 };
 
 export const refresh = async (refreshToken: string) => {
-  // delete from db
-  await tokenService.deleteToken(refreshToken);
+  try {
+    const tokenExists = await tokenService.getToken(refreshToken);
 
-  // evaluate jwt
-  const tokenPayload = verify(refreshToken, config.jwt.refresh_token.secret);
+    if (!tokenExists) return { message: "Invalid token" };
 
-  // session expired
-  if (!tokenPayload.userId) return null;
+    // delete from db
+    await tokenService.deleteToken(refreshToken);
 
-  const newTokens = await generateTokens(tokenPayload.userId);
+    // evaluate jwt
+    const tokenPayload = verify(refreshToken, config.jwt.refresh_token.secret);
 
-  return { ...newTokens };
+    // session expired
+    if (!tokenPayload.userId) return { message: "Token expired" };
+
+    const newTokens = await generateTokens(tokenPayload.userId);
+
+    return { ...newTokens };
+  } catch (error: any) {
+    logger.error(error);
+    return { message: error?.message };
+  }
 };
 
 export const generateTokens = async (userId: string) => {
@@ -91,35 +123,54 @@ export const generateTokens = async (userId: string) => {
 };
 
 export const forgotPassword = async (email: string) => {
-  const user = await User.findOne({ where: { email } });
+  try {
+    const user = await User.findOne({ where: { email } });
 
-  if (!user?.dataValues) return { message: "User doesn't exist" };
+    if (!user?.dataValues) return { message: "User doesn't exist" };
 
-  const resetToken = createAccessToken(user.dataValues.id);
+    const resetToken = createAccessToken(user.dataValues.id);
 
-  await tokenService.saveToken(resetToken, user.dataValues.id, TokenType.RESET);
+    const expiresAt = new Date();
+    const ONE_HOUR_IN_MS = 60 * 60 * 1000;
+    expiresAt.setTime(expiresAt.getTime() + ONE_HOUR_IN_MS);
 
-  // TODO: send an email with the link of the reset page
+    await tokenService.saveToken(
+      resetToken,
+      user.dataValues.id,
+      TokenType.RESET,
+      expiresAt
+    );
 
-  return resetPassword;
+    // TODO: send an email with the link of the reset page
+
+    return { token: resetToken, message: "Password reset email sent" };
+  } catch (error) {
+    logger.error(error);
+    return { message: "Something went wrong" };
+  }
 };
 
 export const resetPassword = async (password: string, token: string) => {
-  const resetToken = await tokenService.getToken(token, {
-    expiresAt: { $gt: new Date() },
-  });
+  try {
+    const resetToken = await tokenService.getToken(token, {
+      expiresAt: { [Op.gt]: new Date() },
+    });
 
-  if (!resetToken) return { message: "Invalid or expired token" };
+    if (!resetToken) return { message: "Invalid or expired token" };
 
-  const user = await User.findOne({ where: { id: resetToken.userId } });
+    const user = await User.findOne({ where: { id: resetToken.userId } });
 
-  if (!user) return { message: "Couldn't find the user" };
+    if (!user) return { message: "Couldn't find the user" };
 
-  const hashed = await argon2.hash(password);
+    const hashed = await argon2.hash(password);
 
-  user.update({ password: hashed });
+    user.update({ password: hashed });
 
-  await tokenService.deleteToken(resetToken.token);
+    await tokenService.deleteToken(resetToken.token);
 
-  return { message: "Password reset successful", success: true };
+    return { message: "Password reset successful", success: true };
+  } catch (error) {
+    logger.error(error);
+    return { message: "Something went wrong" };
+  }
 };

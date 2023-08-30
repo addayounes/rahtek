@@ -1,6 +1,7 @@
 import { TokenType } from "../types/token";
 import { WhereOptions } from "sequelize";
 import { IRefreshTokenAttributes, RefreshToken } from "../models/refreshToken";
+import logger from "../middleware/logger";
 
 export const saveToken = async (
   token: string,
@@ -8,28 +9,47 @@ export const saveToken = async (
   type: TokenType,
   expiresAt: Date | null = null
 ) => {
-  await RefreshToken.create({
-    token,
-    userId,
-    type,
-    expiresAt,
-  });
+  try {
+    await RefreshToken.create({
+      token,
+      userId,
+      type,
+      expiresAt,
+    });
+  } catch (error) {
+    logger.error(error);
+  }
 };
 
 export const deleteUserRefreshTokens = async (userId: string) => {
-  await RefreshToken.destroy({ where: { userId, type: TokenType.REFRESH } });
+  try {
+    await RefreshToken.destroy({ where: { userId, type: TokenType.REFRESH } });
+  } catch (error) {
+    logger.error(error);
+  }
 };
 
 export const deleteToken = async (token: string) => {
-  const tokenDocument = await RefreshToken.findOne({ where: { token } });
-  if (tokenDocument) await tokenDocument.destroy();
+  try {
+    const tokenDocument = await RefreshToken.findOne({ where: { token } });
+    if (tokenDocument) await tokenDocument.destroy();
+  } catch (error) {
+    logger.error(error);
+  }
 };
 
 export const getToken = async (
   token: string,
   filter?: WhereOptions<IRefreshTokenAttributes>
 ) => {
-  const instance = await RefreshToken.findOne({ where: { token, ...filter } });
-  if (!instance) return null;
-  return instance.dataValues;
+  try {
+    const instance = await RefreshToken.findOne({
+      where: { token, ...filter },
+    });
+    if (!instance) return null;
+    return instance.dataValues;
+  } catch (error) {
+    logger.error(error);
+    return null;
+  }
 };

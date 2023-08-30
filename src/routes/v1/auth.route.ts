@@ -33,8 +33,9 @@ authRouter.post(
   validate(forgotPasswordSchema),
   passwordController.handleForgotPassword
 );
+
 authRouter.post(
-  "/reset-password/:token",
+  "/reset-password",
   validate(resetPasswordSchema),
   passwordController.handleResetPassword
 );
