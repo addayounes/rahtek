@@ -8,6 +8,7 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
   refershSchema,
+  sendOTPSchema,
 } from "../../validations/auth.validation";
 
 const authRouter = Router();
@@ -21,6 +22,8 @@ authRouter.post(
   validate(refershSchema),
   authController.handleLogout
 );
+
+authRouter.post("/send-otp", validate(sendOTPSchema), authController.sendOtp);
 
 authRouter.post(
   "/refresh",

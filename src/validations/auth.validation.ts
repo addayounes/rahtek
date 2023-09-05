@@ -17,6 +17,12 @@ export const loginSchema = {
   }),
 };
 
+export const sendOTPSchema = {
+  body: Joi.object().keys({
+    phone: Joi.string().required().min(6),
+  }),
+};
+
 export const refershSchema = {
   body: Joi.object().keys({
     token: Joi.string().required().min(6),

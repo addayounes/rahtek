@@ -14,5 +14,8 @@ declare namespace NodeJS {
     readonly DB_DATABASE: string;
     readonly DB_PORT: string;
     readonly DB_HOST: string;
+    readonly TWILIO_ACC: string;
+    readonly TWILIO_TOKEN: string;
+    readonly TWILIO_SERVICE: string;
   }
 }

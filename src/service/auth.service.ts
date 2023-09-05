@@ -4,6 +4,7 @@ import * as argon2 from "argon2";
 import config from "../config/config";
 import logger from "../middleware/logger";
 import * as tokenService from "./token.service";
+import * as smsService from "./sms.service";
 import { UserSignUpCredentials } from "../types/types";
 import {
   createAccessToken,
@@ -108,6 +109,18 @@ export const refresh = async (refreshToken: string) => {
   }
 };
 
+export const sendOTP = async (phone: string): Promise<any> => {
+  try {
+    const sms = await smsService.sendOTP(phone);
+    return sms;
+  } catch (error: any) {
+    logger.error(error);
+    if (error.code === 20003) return { error: "Twilio auth error" };
+    if (error.code === 60200) return { error: "Incorrect phone number" };
+    return { error: error?.message };
+  }
+};
+
 export const generateTokens = async (userId: string) => {
   try {
     const accessToken = createAccessToken(userId);
@@ -164,7 +177,7 @@ export const resetPassword = async (password: string, token: string) => {
 
     const hashed = await argon2.hash(password);
 
-    user.update({ password: hashed });
+    await user.update({ password: hashed });
 
     await tokenService.deleteToken(resetToken.token);
 

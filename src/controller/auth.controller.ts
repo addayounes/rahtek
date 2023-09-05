@@ -5,6 +5,7 @@ import catchAsync from "../utils/catchAsync";
 import type { Request, Response } from "express";
 import { IUserAttributes } from "../models/user";
 import * as authService from "../service/auth.service";
+import * as smsService from "../service/sms.service";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -38,5 +39,11 @@ export const handleRefresh = catchAsync(async (req: Request, res: Response) => {
   const token = req.body.token;
   const result = await authService.refresh(token);
   if (!result) return res.status(httpStatus.UNAUTHORIZED);
+  return res.json(result);
+});
+
+export const sendOtp = catchAsync(async (req: Request, res: Response) => {
+  const phone = req.body.phone;
+  const result = await authService.sendOTP(phone);
   return res.json(result);
 });

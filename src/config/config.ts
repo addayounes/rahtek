@@ -21,6 +21,9 @@ const envSchema = Joi.object().keys({
   DB_DATABASE: Joi.string().required(),
   DB_PORT: Joi.string().required(),
   DB_HOST: Joi.string().required(),
+  TWILIO_ACC: Joi.string().required(),
+  TWILIO_TOKEN: Joi.string().required(),
+  TWILIO_SERVICE: Joi.string().required(),
 });
 
 const { value: validatedEnv, error } = envSchema
@@ -60,6 +63,11 @@ const config = {
     database: validatedEnv.DB_DATABASE,
     port: validatedEnv.DB_PORT,
     host: validatedEnv.DB_HOST,
+  },
+  sms: {
+    acc: validatedEnv.TWILIO_ACC,
+    token: validatedEnv.TWILIO_TOKEN,
+    service: validatedEnv.TWILIO_SERVICE,
   },
 } as const;
 
