@@ -130,7 +130,7 @@ export const verifyOTP = async (phone: string, code: string): Promise<any> => {
       return { success: false, error: "Incorrect OTP" };
 
     // check if the user exists
-    const user = await User.findOne({ where: { phone } });
+    const user: any = await User.findOne({ where: { phone } });
 
     if (user?.dataValues) {
       // check if the user already has a session elsewhere, if so delete that session
@@ -139,7 +139,9 @@ export const verifyOTP = async (phone: string, code: string): Promise<any> => {
       // create a new session
       const tokens = await generateTokens(user.dataValues.id);
 
-      return { user, ...tokens, success: true };
+      delete user.dataValues.password;
+
+      return { user: user.dataValues, ...tokens, success: true };
     } else {
       // create a register token to be used in the complete-registration route
       const token = createRegisterToken(phone);
