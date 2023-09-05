@@ -5,7 +5,6 @@ import catchAsync from "../utils/catchAsync";
 import type { Request, Response } from "express";
 import { IUserAttributes } from "../models/user";
 import * as authService from "../service/auth.service";
-import * as smsService from "../service/sms.service";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -54,3 +53,13 @@ export const verifyOTP = catchAsync(async (req: Request, res: Response) => {
   if (!result.success) return res.status(httpStatus.UNAUTHORIZED).json(result);
   res.json(result);
 });
+
+export const completeRegistration = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await authService.completeRegistration(
+      req.body,
+      req.params["token"] as string
+    );
+    res.json(result);
+  }
+);

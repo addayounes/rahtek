@@ -10,6 +10,7 @@ import {
   refershSchema,
   sendOTPSchema,
   verifyOTPSchema,
+  completeRegistrationSchema,
 } from "../../validations/auth.validation";
 
 const authRouter = Router();
@@ -30,6 +31,12 @@ authRouter.post(
   "/verify-otp",
   validate(verifyOTPSchema),
   authController.verifyOTP
+);
+
+authRouter.post(
+  "/complete-registration",
+  validate(completeRegistrationSchema),
+  authController.completeRegistration
 );
 
 authRouter.post(

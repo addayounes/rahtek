@@ -74,6 +74,29 @@ export const login = async (email: string, password: string) => {
   }
 };
 
+export const completeRegistration = async (
+  userData: Omit<UserSignUpCredentials, "phone">,
+  token: string
+) => {
+  try {
+    const registerToken = await tokenService.getToken(token, {
+      expiresAt: { [Op.gt]: new Date() },
+    });
+
+    if (!registerToken) return { message: "Invalid or expired token" };
+
+    const phone = verify(token, config.jwt.register_token.secret);
+
+    if (!phone) return { message: "Invalid or expired token" };
+
+    const result = await signUp({ ...userData, phone });
+
+    return result;
+  } catch (error) {
+    logger.error(error);
+  }
+};
+
 export const logout = async (token: string) => {
   try {
     const tokenExists = await tokenService.getToken(token);
