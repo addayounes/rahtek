@@ -23,6 +23,13 @@ export const sendOTPSchema = {
   }),
 };
 
+export const verifyOTPSchema = {
+  body: Joi.object().keys({
+    phone: Joi.string().required().min(6),
+    code: Joi.string().required(),
+  }),
+};
+
 export const refershSchema = {
   body: Joi.object().keys({
     token: Joi.string().required().min(6),

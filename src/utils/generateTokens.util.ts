@@ -28,3 +28,13 @@ export const createRefreshToken = (userId: number | string): string => {
     expiresIn: config.jwt.refresh_token.expire,
   });
 };
+
+/**
+ * This functions generates a valid register token
+ *
+ * @param {string} phone - The phone of the user that owns this jwt
+ * @returns Returns a valid refresh token
+ */
+export const createRegisterToken = (phone: string): string => {
+  return sign({ phone }, config.jwt.register_token.secret, { expiresIn: "1h" });
+};
