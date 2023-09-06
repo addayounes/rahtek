@@ -30,7 +30,7 @@ export const RefreshToken = sequelize.define<
     expiresAt: { type: DataTypes.DATE, allowNull: true },
     userId: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
       references: { model: "Users", key: "id" },
       onDelete: "CASCADE",
     },

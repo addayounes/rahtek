@@ -81,15 +81,18 @@ export const completeRegistration = async (
   try {
     const registerToken = await tokenService.getToken(token, {
       expiresAt: { [Op.gt]: new Date() },
+      type: TokenType.REGISTER,
     });
 
     if (!registerToken) return { message: "Invalid or expired token" };
 
-    const phone = verify(token, config.jwt.register_token.secret);
+    const payload = verify(token, config.jwt.register_token.secret);
 
-    if (!phone) return { message: "Invalid or expired token" };
+    if (!payload?.phone) return { message: "Invalid or expired token" };
 
-    const result = await signUp({ ...userData, phone });
+    const result = await signUp({ ...userData, phone: payload.phone });
+
+    await tokenService.deleteToken(token);
 
     return result;
   } catch (error) {
@@ -173,7 +176,7 @@ export const verifyOTP = async (phone: string, code: string): Promise<any> => {
       const ONE_HOUR_IN_MS = 60 * 60 * 1000;
       expiresAt.setTime(expiresAt.getTime() + ONE_HOUR_IN_MS);
 
-      await tokenService.saveToken(token, phone, TokenType.REGISTER, expiresAt);
+      await tokenService.saveToken(token, null, TokenType.REGISTER, expiresAt);
       return { phone, token, success: true };
     }
   } catch (error) {

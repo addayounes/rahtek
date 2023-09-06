@@ -5,7 +5,7 @@ import logger from "../middleware/logger";
 
 export const saveToken = async (
   token: string,
-  userId: string,
+  userId: string | null,
   type: TokenType,
   expiresAt: Date | null = null
 ) => {
