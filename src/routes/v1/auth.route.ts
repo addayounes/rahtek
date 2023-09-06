@@ -34,7 +34,7 @@ authRouter.post(
 );
 
 authRouter.post(
-  "/complete-registration",
+  "/complete-registration/:token",
   validate(completeRegistrationSchema),
   authController.completeRegistration
 );
