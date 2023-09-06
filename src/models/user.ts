@@ -6,6 +6,7 @@ export interface IUserAttributes {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   password: string;
 }
 
@@ -16,6 +17,7 @@ export const User = sequelize.define<Model<IUserAttributes, {}>>(
     firstName: { type: DataTypes.STRING, allowNull: false },
     lastName: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
+    phone: { type: DataTypes.STRING, allowNull: false, unique: true },
     password: { type: DataTypes.STRING, allowNull: false },
   },
   {

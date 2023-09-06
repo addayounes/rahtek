@@ -16,12 +16,12 @@ module.exports = {
         type: {
           type: Sequelize.ENUM,
           allowNull: false,
-          values: ["REFRESH", "RESET"],
+          values: ["REFRESH", "RESET", "REGISTER"],
         },
         expiresAt: { type: Sequelize.DATE, allowNull: true },
         userId: {
           type: Sequelize.UUID,
-          allowNull: false,
+          allowNull: true,
           references: { model: "Users", key: "id" },
           onDelete: "CASCADE",
         },

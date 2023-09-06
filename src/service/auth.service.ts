@@ -4,10 +4,12 @@ import * as argon2 from "argon2";
 import config from "../config/config";
 import logger from "../middleware/logger";
 import * as tokenService from "./token.service";
+import * as smsService from "./sms.service";
 import { UserSignUpCredentials } from "../types/types";
 import {
   createAccessToken,
   createRefreshToken,
+  createRegisterToken,
 } from "../utils/generateTokens.util";
 import { User } from "../models/user";
 import { randomUUID } from "crypto";
@@ -72,6 +74,32 @@ export const login = async (email: string, password: string) => {
   }
 };
 
+export const completeRegistration = async (
+  userData: Omit<UserSignUpCredentials, "phone">,
+  token: string
+) => {
+  try {
+    const registerToken = await tokenService.getToken(token, {
+      expiresAt: { [Op.gt]: new Date() },
+      type: TokenType.REGISTER,
+    });
+
+    if (!registerToken) return { message: "Invalid or expired token" };
+
+    const payload = verify(token, config.jwt.register_token.secret);
+
+    if (!payload?.phone) return { message: "Invalid or expired token" };
+
+    const result = await signUp({ ...userData, phone: payload.phone });
+
+    await tokenService.deleteToken(token);
+
+    return result;
+  } catch (error) {
+    logger.error(error);
+  }
+};
+
 export const logout = async (token: string) => {
   try {
     const tokenExists = await tokenService.getToken(token);
@@ -105,6 +133,54 @@ export const refresh = async (refreshToken: string) => {
   } catch (error: any) {
     logger.error(error);
     return { message: error?.message };
+  }
+};
+
+export const sendOTP = async (phone: string): Promise<any> => {
+  try {
+    const sms = await smsService.sendOTP(phone);
+    return sms;
+  } catch (error: any) {
+    logger.error(error);
+    if (error.code === 20003) return { error: "Twilio auth error" };
+    if (error.code === 60200) return { error: "Incorrect phone number" };
+    return { error: error?.message };
+  }
+};
+
+export const verifyOTP = async (phone: string, code: string): Promise<any> => {
+  try {
+    const sms = await smsService.verifyOTP(phone, code);
+
+    if (sms.status !== "approved")
+      return { success: false, error: "Incorrect OTP" };
+
+    // check if the user exists
+    const user: any = await User.findOne({ where: { phone } });
+
+    if (user?.dataValues) {
+      // check if the user already has a session elsewhere, if so delete that session
+      await tokenService.deleteUserRefreshTokens(user.dataValues.id);
+
+      // create a new session
+      const tokens = await generateTokens(user.dataValues.id);
+
+      delete user.dataValues.password;
+
+      return { user: user.dataValues, ...tokens, success: true };
+    } else {
+      // create a register token to be used in the complete-registration route
+      const token = createRegisterToken(phone);
+
+      const expiresAt = new Date();
+      const ONE_HOUR_IN_MS = 60 * 60 * 1000;
+      expiresAt.setTime(expiresAt.getTime() + ONE_HOUR_IN_MS);
+
+      await tokenService.saveToken(token, null, TokenType.REGISTER, expiresAt);
+      return { phone, token, success: true };
+    }
+  } catch (error) {
+    return { error: "Incorrect phone number", success: false };
   }
 };
 
@@ -164,7 +240,7 @@ export const resetPassword = async (password: string, token: string) => {
 
     const hashed = await argon2.hash(password);
 
-    user.update({ password: hashed });
+    await user.update({ password: hashed });
 
     await tokenService.deleteToken(resetToken.token);
 

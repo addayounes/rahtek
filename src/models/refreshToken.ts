@@ -25,12 +25,12 @@ export const RefreshToken = sequelize.define<
     type: {
       type: DataTypes.ENUM,
       allowNull: false,
-      values: [TokenType.REFRESH, TokenType.RESET],
+      values: [TokenType.REFRESH, TokenType.RESET, TokenType.REGISTER],
     },
     expiresAt: { type: DataTypes.DATE, allowNull: true },
     userId: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
       references: { model: "Users", key: "id" },
       onDelete: "CASCADE",
     },

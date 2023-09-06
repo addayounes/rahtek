@@ -15,12 +15,16 @@ const envSchema = Joi.object().keys({
   ACCESS_TOKEN_EXPIRE: Joi.string().required().default("20m"),
   REFRESH_TOKEN_SECRET: Joi.string().min(8).required(),
   REFRESH_TOKEN_EXPIRE: Joi.string().required().default("1d"),
+  REGISTER_TOKEN_SECRET: Joi.string().required().default("1h"),
   DATABASE_URL: Joi.string().required(),
   DB_USER: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),
   DB_DATABASE: Joi.string().required(),
   DB_PORT: Joi.string().required(),
   DB_HOST: Joi.string().required(),
+  TWILIO_ACC: Joi.string().required(),
+  TWILIO_TOKEN: Joi.string().required(),
+  TWILIO_SERVICE: Joi.string().required(),
 });
 
 const { value: validatedEnv, error } = envSchema
@@ -53,6 +57,9 @@ const config = {
       secret: validatedEnv.REFRESH_TOKEN_SECRET,
       expire: validatedEnv.REFRESH_TOKEN_EXPIRE,
     },
+    register_token: {
+      secret: validatedEnv.REGISTER_TOKEN_SECRET,
+    },
   },
   database: {
     username: validatedEnv.DB_USER,
@@ -60,6 +67,11 @@ const config = {
     database: validatedEnv.DB_DATABASE,
     port: validatedEnv.DB_PORT,
     host: validatedEnv.DB_HOST,
+  },
+  sms: {
+    acc: validatedEnv.TWILIO_ACC,
+    token: validatedEnv.TWILIO_TOKEN,
+    service: validatedEnv.TWILIO_SERVICE,
   },
 } as const;
 

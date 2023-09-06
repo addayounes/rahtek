@@ -8,11 +8,15 @@ declare namespace NodeJS {
     readonly ACCESS_TOKEN_EXPIRE: string;
     readonly REFRESH_TOKEN_SECRET: string;
     readonly REFRESH_TOKEN_EXPIRE: string;
+    readonly REGISTER_TOKEN_SECRET: string;
     readonly DATABASE_URL: string;
     readonly DB_USER: string;
     readonly DB_PASSWORD: string;
     readonly DB_DATABASE: string;
     readonly DB_PORT: string;
     readonly DB_HOST: string;
+    readonly TWILIO_ACC: string;
+    readonly TWILIO_TOKEN: string;
+    readonly TWILIO_SERVICE: string;
   }
 }
