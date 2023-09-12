@@ -9,11 +9,16 @@ import { errorHandler } from "./middleware/errorHandler";
 import config from "./config/config";
 import authLimiter from "./middleware/authLimiter";
 import { xssMiddleware } from "./middleware/xssMiddleware";
+import passport from "passport";
+import "./utils/passport";
 
 const app: Express = express();
 
 // Helmet is used to secure this app by configuring the http-header
 app.use(helmet());
+
+// Initialize Passport
+app.use(passport.initialize());
 
 // parse json request body
 app.use(express.json());

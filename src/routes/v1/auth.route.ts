@@ -1,3 +1,4 @@
+import passport from "passport";
 import { Router } from "express";
 import validate from "../../middleware/validate";
 import * as authController from "../../controller/auth.controller";
@@ -55,6 +56,19 @@ authRouter.post(
   "/reset-password",
   validate(resetPasswordSchema),
   passwordController.handleResetPassword
+);
+
+authRouter.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+authRouter.get(
+  "/google/callback",
+  passport.authenticate("google", { session: false }),
+  authController.googleAuth
 );
 
 export default authRouter;
