@@ -13,7 +13,9 @@ export const handleSignUp = catchAsync(async (req: Request, res: Response) => {
   logger.info("Sign up");
   const user = await authService.signUp(req.body as any);
   if (!user)
-    res.status(httpStatus.CONFLICT).json({ message: "Email already exists!" });
+    return res
+      .status(httpStatus.CONFLICT)
+      .json({ message: "Email already exists!" });
   res.status(httpStatus.CREATED).json({ ...user });
 });
 
@@ -61,7 +63,20 @@ export const completeRegistration = catchAsync(
   }
 );
 
-export const googleAuth = catchAsync(async (req: Request, res: Response) => {
+export const googleAuth = catchAsync(async (req: any, res: Response) => {
+  if (!req.user?.id)
+    return res
+      .status(httpStatus.INTERNAL_SERVER_ERROR)
+      .json({ error: "Something went wrong" });
+
+  const tokens = await authService.generateTokens(req.user.id);
+
+  delete req.user.password;
+
+  res.json({ user: req.user, ...tokens });
+});
+
+export const facebookAuth = catchAsync(async (req: any, res: Response) => {
   if (!req.user?.id)
     return res
       .status(httpStatus.INTERNAL_SERVER_ERROR)

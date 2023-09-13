@@ -15,6 +15,7 @@ import { User } from "../models/user";
 import { randomUUID } from "crypto";
 import { TokenType } from "../types/token";
 import { Profile, VerifyCallback } from "passport-google-oauth20";
+import { Profile as FacebookProfile } from "passport-facebook";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -273,7 +274,37 @@ export const googleAuthUser = async (
       firstName: profile.name?.givenName ?? "",
       lastName: profile.name?.familyName ?? "",
       email: profile.emails?.length ? profile.emails[0]?.value : "",
-      phone: "",
+    });
+
+    if (!newUser?.dataValues) throw new Error("Error creating the user");
+
+    done(null, newUser?.dataValues);
+  } catch (error: any) {
+    logger.error(error);
+    done(error, false);
+    return { message: "Something went wrong" };
+  }
+};
+export const facebookAuthUser = async (
+  _accessToken: string,
+  _refreshToken: string,
+  profile: FacebookProfile,
+  done: (error: any, user?: any, info?: any) => void
+) => {
+  try {
+    // Check if the user already exists in your database
+    const existingUser = await User.findOne({
+      where: { facebookId: profile.id },
+    });
+
+    if (existingUser?.dataValues) return done(null, existingUser.dataValues);
+
+    // User doesn't exist, create a new user in your database
+    const newUser: any = await User.create({
+      id: randomUUID(),
+      facebookId: profile.id,
+      firstName: profile.name?.givenName ?? "",
+      lastName: profile.name?.familyName ?? "",
     });
 
     if (!newUser?.dataValues) throw new Error("Error creating the user");

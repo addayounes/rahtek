@@ -21,5 +21,8 @@ declare namespace NodeJS {
     readonly GOOGLE_CLIENT_ID: string;
     readonly GOOGLE_CLIENT_SECRET: string;
     readonly GOOGLE_CALLBACK_URL: string;
+    readonly FACEBOOK_CLIENT_ID: string;
+    readonly FACEBOOK_CLIENT_SECRET: string;
+    readonly FACEBOOK_CALLBACK_URL: string;
   }
 }

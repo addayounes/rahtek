@@ -71,4 +71,12 @@ authRouter.get(
   authController.googleAuth
 );
 
+authRouter.get("/facebook", passport.authenticate("facebook"));
+
+authRouter.get(
+  "/facebook/callback",
+  passport.authenticate("facebook", { session: false }),
+  authController.facebookAuth
+);
+
 export default authRouter;
