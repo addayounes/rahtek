@@ -5,8 +5,8 @@ export const signupSchema = {
   body: Joi.object<Omit<IUserAttributes, "id">>().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(6),
-    firstName: Joi.string().required().min(2),
-    lastName: Joi.string().required().min(2),
+    first_name: Joi.string().required().min(2),
+    last_name: Joi.string().required().min(2),
     phone: Joi.string().required().min(6),
   }),
 };
@@ -35,8 +35,8 @@ export const completeRegistrationSchema = {
   body: Joi.object<Omit<IUserAttributes, "id">>().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(6),
-    firstName: Joi.string().required().min(2),
-    lastName: Joi.string().required().min(2),
+    first_name: Joi.string().required().min(2),
+    last_name: Joi.string().required().min(2),
   }),
   params: Joi.object().keys({
     token: Joi.string().required().min(1),

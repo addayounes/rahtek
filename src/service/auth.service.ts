@@ -271,8 +271,8 @@ export const googleAuthUser = async (
     const newUser: any = await User.create({
       id: randomUUID(),
       googleId: profile.id,
-      firstName: profile.name?.givenName ?? "",
-      lastName: profile.name?.familyName ?? "",
+      first_name: profile.name?.givenName ?? "",
+      last_name: profile.name?.familyName ?? "",
       email: profile.emails?.length ? profile.emails[0]?.value : "",
     });
 
@@ -303,8 +303,8 @@ export const facebookAuthUser = async (
     const newUser: any = await User.create({
       id: randomUUID(),
       facebookId: profile.id,
-      firstName: profile.name?.givenName ?? "",
-      lastName: profile.name?.familyName ?? "",
+      first_name: profile.name?.givenName ?? "",
+      last_name: profile.name?.familyName ?? "",
     });
 
     if (!newUser?.dataValues) throw new Error("Error creating the user");
