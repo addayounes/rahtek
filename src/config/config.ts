@@ -25,6 +25,12 @@ const envSchema = Joi.object().keys({
   TWILIO_ACC: Joi.string().required(),
   TWILIO_TOKEN: Joi.string().required(),
   TWILIO_SERVICE: Joi.string().required(),
+  GOOGLE_CLIENT_ID: Joi.string().required(),
+  GOOGLE_CLIENT_SECRET: Joi.string().required(),
+  GOOGLE_CALLBACK_URL: Joi.string().required(),
+  FACEBOOK_CLIENT_ID: Joi.string().required(),
+  FACEBOOK_CLIENT_SECRET: Joi.string().required(),
+  FACEBOOK_CALLBACK_URL: Joi.string().required(),
 });
 
 const { value: validatedEnv, error } = envSchema
@@ -72,6 +78,18 @@ const config = {
     acc: validatedEnv.TWILIO_ACC,
     token: validatedEnv.TWILIO_TOKEN,
     service: validatedEnv.TWILIO_SERVICE,
+  },
+  thirdParty: {
+    google: {
+      client_id: validatedEnv.GOOGLE_CLIENT_ID,
+      client_secret: validatedEnv.GOOGLE_CLIENT_SECRET,
+      callback_url: validatedEnv.GOOGLE_CALLBACK_URL,
+    },
+    facebook: {
+      client_id: validatedEnv.FACEBOOK_CLIENT_ID,
+      client_secret: validatedEnv.FACEBOOK_CLIENT_SECRET,
+      callback_url: validatedEnv.FACEBOOK_CALLBACK_URL,
+    },
   },
 } as const;
 

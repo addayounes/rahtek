@@ -14,6 +14,8 @@ import {
 import { User } from "../models/user";
 import { randomUUID } from "crypto";
 import { TokenType } from "../types/token";
+import { Profile, VerifyCallback } from "passport-google-oauth20";
+import { Profile as FacebookProfile } from "passport-facebook";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -247,6 +249,70 @@ export const resetPassword = async (password: string, token: string) => {
     return { message: "Password reset successful", success: true };
   } catch (error) {
     logger.error(error);
+    return { message: "Something went wrong" };
+  }
+};
+
+export const googleAuthUser = async (
+  _accessToken: string,
+  _refreshToken: string,
+  profile: Profile,
+  done: VerifyCallback
+) => {
+  try {
+    // Check if the user already exists in your database
+    const existingUser = await User.findOne({
+      where: { googleId: profile.id },
+    });
+
+    if (existingUser?.dataValues) return done(null, existingUser.dataValues);
+
+    // User doesn't exist, create a new user in your database
+    const newUser: any = await User.create({
+      id: randomUUID(),
+      googleId: profile.id,
+      first_name: profile.name?.givenName ?? "",
+      last_name: profile.name?.familyName ?? "",
+      email: profile.emails?.length ? profile.emails[0]?.value : "",
+    });
+
+    if (!newUser?.dataValues) throw new Error("Error creating the user");
+
+    done(null, newUser?.dataValues);
+  } catch (error: any) {
+    logger.error(error);
+    done(error, false);
+    return { message: "Something went wrong" };
+  }
+};
+export const facebookAuthUser = async (
+  _accessToken: string,
+  _refreshToken: string,
+  profile: FacebookProfile,
+  done: (error: any, user?: any, info?: any) => void
+) => {
+  try {
+    // Check if the user already exists in your database
+    const existingUser = await User.findOne({
+      where: { facebookId: profile.id },
+    });
+
+    if (existingUser?.dataValues) return done(null, existingUser.dataValues);
+
+    // User doesn't exist, create a new user in your database
+    const newUser: any = await User.create({
+      id: randomUUID(),
+      facebookId: profile.id,
+      first_name: profile.name?.givenName ?? "",
+      last_name: profile.name?.familyName ?? "",
+    });
+
+    if (!newUser?.dataValues) throw new Error("Error creating the user");
+
+    done(null, newUser?.dataValues);
+  } catch (error: any) {
+    logger.error(error);
+    done(error, false);
     return { message: "Something went wrong" };
   }
 };

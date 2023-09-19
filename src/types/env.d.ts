@@ -18,5 +18,11 @@ declare namespace NodeJS {
     readonly TWILIO_ACC: string;
     readonly TWILIO_TOKEN: string;
     readonly TWILIO_SERVICE: string;
+    readonly GOOGLE_CLIENT_ID: string;
+    readonly GOOGLE_CLIENT_SECRET: string;
+    readonly GOOGLE_CALLBACK_URL: string;
+    readonly FACEBOOK_CLIENT_ID: string;
+    readonly FACEBOOK_CLIENT_SECRET: string;
+    readonly FACEBOOK_CALLBACK_URL: string;
   }
 }
