@@ -3,7 +3,7 @@ import sequelize from "../config/sequelize";
 import { TokenType } from "../types/token";
 
 export interface IRefreshTokenAttributes {
-  id: number;
+  id: string;
   token: string;
   type: string;
   expiresAt: string;
@@ -16,10 +16,9 @@ export const RefreshToken = sequelize.define<
   "RefreshTokens",
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
     },
     token: { type: DataTypes.STRING, allowNull: false },
     type: {

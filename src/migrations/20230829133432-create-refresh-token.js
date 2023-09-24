@@ -7,10 +7,9 @@ module.exports = {
       "RefreshTokens",
       {
         id: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.UUID,
           allowNull: false,
           primaryKey: true,
-          autoIncrement: true,
         },
         token: { type: Sequelize.STRING, allowNull: false },
         type: {
