@@ -18,6 +18,7 @@ module.exports = {
           type: Sequelize.ENUM,
           allowNull: false,
           values: ["AVAILABLE", "TAKEN"],
+          defaultValue: "AVAILABLE",
         },
         category_id: {
           type: Sequelize.UUID,

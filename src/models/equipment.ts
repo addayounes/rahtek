@@ -1,13 +1,13 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
-import { EquipmentsType } from "src/types/equipment";
+import { EquipmentsStatus } from "../types/equipment";
 
 export interface IEquipmentAttributes {
   id: number;
   name: string;
   description: string;
   photo: string;
-  status: EquipmentsType;
+  status: EquipmentsStatus;
   category_id: string;
   published_by: string;
 }
@@ -27,7 +27,8 @@ export const Equipment = sequelize.define<Model<IEquipmentAttributes, {}>>(
     status: {
       type: DataTypes.ENUM,
       allowNull: false,
-      values: [EquipmentsType.AVAILABLE, EquipmentsType.TAKEN],
+      values: [EquipmentsStatus.AVAILABLE, EquipmentsStatus.TAKEN],
+      defaultValue: EquipmentsStatus.AVAILABLE,
     },
     category_id: {
       type: DataTypes.UUID,
