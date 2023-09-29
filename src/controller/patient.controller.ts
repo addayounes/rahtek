@@ -10,3 +10,11 @@ export const handleCreatePatient = catchAsync(
     return res.status(httpStatus.CREATED).json(patient);
   }
 );
+
+export const handleUpdatePatient = catchAsync(
+  async (req: any, res: Response) => {
+    const result = await patientService.updatePatient(req.params.id, req.body);
+    if (!result) res.status(httpStatus.INTERNAL_SERVER_ERROR);
+    return res.json(result);
+  }
+);
