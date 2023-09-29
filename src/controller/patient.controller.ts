@@ -26,3 +26,10 @@ export const handleDeletePatient = catchAsync(
     return res.json(result);
   }
 );
+
+export const handleGetUserPatients = catchAsync(
+  async (req: any, res: Response) => {
+    const result = await patientService.getUserPatients(req.params.id);
+    return res.json(result);
+  }
+);

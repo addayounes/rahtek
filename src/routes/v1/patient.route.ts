@@ -8,6 +8,7 @@ import {
 import {
   handleCreatePatient,
   handleDeletePatient,
+  handleGetUserPatients,
   handleUpdatePatient,
 } from "../../controller/patient.controller";
 
@@ -19,5 +20,9 @@ patientRouter
   .route("/:id")
   .patch(validate(updateSchema), handleUpdatePatient)
   .delete(validate(deleteSchema), handleDeletePatient);
+
+patientRouter
+  .route("/user/:id")
+  .post(validate(deleteSchema), handleGetUserPatients);
 
 export default patientRouter;

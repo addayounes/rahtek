@@ -45,3 +45,13 @@ export const deletePatient = async (id: string) => {
     return { error: error?.message };
   }
 };
+
+export const getUserPatients = async (userId: string) => {
+  try {
+    const result = await Patient.findAll({ where: { represented_by: userId } });
+    return result;
+  } catch (error: any) {
+    logger.error(error);
+    return { error: error?.message };
+  }
+};
