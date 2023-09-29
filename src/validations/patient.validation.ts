@@ -23,3 +23,9 @@ export const updateSchema = {
     medical_record: Joi.string(),
   }),
 };
+
+export const deleteSchema = {
+  params: Joi.object().keys({
+    id: Joi.string().required(),
+  }),
+};

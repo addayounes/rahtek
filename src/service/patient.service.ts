@@ -30,3 +30,18 @@ export const updatePatient = async (
     return null;
   }
 };
+
+export const deletePatient = async (id: string) => {
+  try {
+    const result = await Patient.findOne({ where: { id } });
+
+    if (!result?.dataValues) throw new Error("Patient not found");
+
+    await result.destroy();
+
+    return { success: true };
+  } catch (error: any) {
+    logger.error(error);
+    return { error: error?.message };
+  }
+};
