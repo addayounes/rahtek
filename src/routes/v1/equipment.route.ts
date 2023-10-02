@@ -31,6 +31,6 @@ equipmentRouter
 
 equipmentRouter
   .route("/user/:id")
-  .post(validate(deleteSchema), handleGetUserEquipments);
+  .get(validate(deleteSchema), handleGetUserEquipments);
 
 export default equipmentRouter;
