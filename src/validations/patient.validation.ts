@@ -7,7 +7,6 @@ export const createSchema = {
     phone: Joi.string().required().min(6),
     address: Joi.string().min(2),
     medical_record: Joi.string(),
-    represented_by: Joi.string().required(),
   }),
 };
 

@@ -11,18 +11,19 @@ import {
   handleGetUserPatients,
   handleUpdatePatient,
 } from "../../controller/patient.controller";
+import isAuth from "../../middleware/isAuth";
 
 const patientRouter = Router();
 
-patientRouter.route("/").post(validate(createSchema), handleCreatePatient);
+patientRouter
+  .route("/")
+  .post(isAuth, validate(createSchema), handleCreatePatient);
 
 patientRouter
   .route("/:id")
-  .patch(validate(updateSchema), handleUpdatePatient)
-  .delete(validate(deleteSchema), handleDeletePatient);
+  .patch(isAuth, validate(updateSchema), handleUpdatePatient)
+  .delete(isAuth, validate(deleteSchema), handleDeletePatient);
 
-patientRouter
-  .route("/user/:id")
-  .post(validate(deleteSchema), handleGetUserPatients);
+patientRouter.route("/user").get(isAuth, handleGetUserPatients);
 
 export default patientRouter;

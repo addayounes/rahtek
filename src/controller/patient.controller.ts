@@ -5,7 +5,10 @@ import * as patientService from "../service/patient.service";
 
 export const handleCreatePatient = catchAsync(
   async (req: Request, res: Response) => {
-    const patient = await patientService.createPatient(req.body);
+    const patient = await patientService.createPatient({
+      ...req.body,
+      represented_by: req.user.id,
+    });
     if (!patient) res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     return res.status(httpStatus.CREATED).json(patient);
   }
@@ -29,7 +32,7 @@ export const handleDeletePatient = catchAsync(
 
 export const handleGetUserPatients = catchAsync(
   async (req: any, res: Response) => {
-    const result = await patientService.getUserPatients(req.params.id);
+    const result = await patientService.getUserPatients(req.user.id);
     return res.json(result);
   }
 );
