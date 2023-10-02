@@ -188,7 +188,7 @@ export const verifyOTP = async (phone: string, code: string): Promise<any> => {
 
 export const generateTokens = async (userId: string) => {
   try {
-    const accessToken = createAccessToken(userId);
+    const accessToken = await createAccessToken(userId);
     const refreshToken = createRefreshToken(userId);
 
     // add refresh token to db
@@ -206,7 +206,7 @@ export const forgotPassword = async (email: string) => {
 
     if (!user?.dataValues) return { message: "User doesn't exist" };
 
-    const resetToken = createAccessToken(user.dataValues.id);
+    const resetToken = await createAccessToken(user.dataValues.id);
 
     const expiresAt = new Date();
     const ONE_HOUR_IN_MS = 60 * 60 * 1000;
