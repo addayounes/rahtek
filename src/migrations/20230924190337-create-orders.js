@@ -6,6 +6,11 @@ module.exports = {
     await queryInterface.createTable(
       "Orders",
       {
+        id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          primaryKey: true,
+        },
         patient_id: {
           type: Sequelize.UUID,
           allowNull: false,
@@ -32,7 +37,7 @@ module.exports = {
         status: {
           type: Sequelize.ENUM,
           allowNull: false,
-          values: ["PENDING", "ONGOING", "FINISHED"],
+          values: ["PENDING", "ONGOING", "FINISHED", "REFUSED"],
           defaultValue: "PENDING",
         },
       },
