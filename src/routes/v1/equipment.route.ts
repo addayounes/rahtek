@@ -12,6 +12,7 @@ import {
   handleGetUserEquipments,
   handleGetEquipments,
   handleUpdateEquipment,
+  handleGetEquipmentById,
 } from "../../controller/equipment.controller";
 import isAuth from "../../middleware/isAuth";
 
@@ -24,6 +25,7 @@ equipmentRouter
 
 equipmentRouter
   .route("/:id")
+  .get(validate(deleteSchema), handleGetEquipmentById)
   .patch(isAuth, validate(updateSchema), handleUpdateEquipment)
   .delete(isAuth, validate(deleteSchema), handleDeleteEquipment);
 

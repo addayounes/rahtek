@@ -91,3 +91,13 @@ export const getEquipments = async (options: any) => {
     return { error: error?.message };
   }
 };
+
+export const getEquipmentById = async (id: string) => {
+  try {
+    const result = await Equipment.findOne({ where: { id } });
+    return result;
+  } catch (error: any) {
+    logger.error(error);
+    return { error: error?.message };
+  }
+};

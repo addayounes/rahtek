@@ -46,3 +46,10 @@ export const handleGetEquipments = catchAsync(
     return res.json(result);
   }
 );
+
+export const handleGetEquipmentById = catchAsync(
+  async (req: any, res: Response) => {
+    const result = await equipmentService.getEquipmentById(req.params?.id);
+    return res.json(result);
+  }
+);
