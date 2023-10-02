@@ -4,6 +4,7 @@ import httpStatus from "http-status";
 
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import config from "../config/config";
+import { getUserById } from "../service/user.service";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -23,9 +24,9 @@ const isAuth = (req: Request, res: Response, next: NextFunction) => {
   verify(
     token,
     config.jwt.access_token.secret,
-    (err: unknown, payload: JwtPayload) => {
+    async (err: unknown, payload: JwtPayload) => {
       if (err) return res.sendStatus(httpStatus.FORBIDDEN); // invalid token
-      req.user = payload;
+      req.user = await getUserById(payload.userId);
       next();
     }
   );
