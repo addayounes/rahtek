@@ -8,6 +8,8 @@ export const signupSchema = {
     first_name: Joi.string().required().min(2),
     last_name: Joi.string().required().min(2),
     phone: Joi.string().required().min(6),
+    wilaya: Joi.string().required(),
+    town: Joi.string().required(),
   }),
 };
 
@@ -37,6 +39,8 @@ export const completeRegistrationSchema = {
     password: Joi.string().required().min(6),
     first_name: Joi.string().required().min(2),
     last_name: Joi.string().required().min(2),
+    wilaya: Joi.string().required(),
+    town: Joi.string().required(),
   }),
   params: Joi.object().keys({
     token: Joi.string().required().min(1),

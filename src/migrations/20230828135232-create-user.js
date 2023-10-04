@@ -11,6 +11,7 @@ module.exports = {
       wilaya: { type: Sequelize.STRING, allowNull: true },
       town: { type: Sequelize.STRING, allowNull: true },
       identity_card: { type: Sequelize.STRING, allowNull: true },
+      photo: { type: Sequelize.STRING, allowNull: true },
       role: {
         type: Sequelize.STRING,
         allowNull: false,
