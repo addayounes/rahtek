@@ -37,6 +37,8 @@ module.exports = {
           values: ["PENDING", "ONGOING", "FINISHED", "REFUSED"],
           defaultValue: "PENDING",
         },
+        createdAt: { type: Sequelize.DATE, allowNull: false },
+        updatedAt: { type: Sequelize.DATE, allowNull: false },
       },
       {
         tableName: "Orders",
