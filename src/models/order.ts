@@ -1,6 +1,9 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
 import { OrderStatus } from "../types/order";
+import { Equipment } from "./equipment";
+import { Patient } from "./patient";
+import { User } from "./user";
 
 export interface IOrderAttributes {
   id: string;
@@ -57,3 +60,12 @@ export const Order = sequelize.define<Model<IOrderAttributes, {}>>(
     timestamps: true,
   }
 );
+
+User.hasMany(Order, { foreignKey: "id" });
+Order.belongsTo(User, { foreignKey: "gaurantee_id" });
+
+Equipment.hasMany(Order, { foreignKey: "id" });
+Order.belongsTo(Equipment, { foreignKey: "equipment_id" });
+
+Patient.hasMany(Order, { foreignKey: "id" });
+Order.belongsTo(Patient, { foreignKey: "patient_id" });

@@ -82,7 +82,7 @@ export const getEquipments = async (options: any) => {
     const result = await Equipment.findAll({
       where,
       include: { all: true },
-      order: ["createdAt", "DESC"],
+      order: ["createdAt"],
     });
 
     return result;

@@ -9,7 +9,7 @@ export const handleCreateEquipment = catchAsync(
       ...req.body,
       published_by: req.user?.id,
     });
-    if (!equipment) res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+    if (!equipment) return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     return res.status(httpStatus.CREATED).json(equipment);
   }
 );
@@ -20,7 +20,7 @@ export const handleUpdateEquipment = catchAsync(
       req.params.id,
       req.body
     );
-    if (!result) res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+    if (!result) return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
     return res.json(result);
   }
 );
@@ -28,7 +28,8 @@ export const handleUpdateEquipment = catchAsync(
 export const handleDeleteEquipment = catchAsync(
   async (req: any, res: Response) => {
     const result = await equipmentService.deleteEquipment(req.params.id);
-    if (result?.error) res.status(httpStatus.NOT_FOUND).json(result.error);
+    if (result?.error)
+      return res.status(httpStatus.NOT_FOUND).json(result.error);
     return res.json(result);
   }
 );

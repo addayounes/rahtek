@@ -47,5 +47,5 @@ export const Equipment = sequelize.define<Model<IEquipmentAttributes, {}>>(
       onDelete: "CASCADE",
     },
   },
-  { tableName: "Equipments" }
+  { tableName: "Equipments", timestamps: true }
 );
