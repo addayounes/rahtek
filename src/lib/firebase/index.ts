@@ -1,4 +1,5 @@
 import firebaseAdmin, { ServiceAccount } from "firebase-admin";
+import { getStorage } from "firebase-admin/storage";
 import config from "../../config/config";
 
 firebaseAdmin.initializeApp({
@@ -7,5 +8,7 @@ firebaseAdmin.initializeApp({
   ),
   storageBucket: config.thirdParty.firebase.storageBucket,
 });
+
+export const bucket = getStorage().bucket();
 
 export default firebaseAdmin;
