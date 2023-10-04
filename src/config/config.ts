@@ -31,6 +31,18 @@ const envSchema = Joi.object().keys({
   FACEBOOK_CLIENT_ID: Joi.string().required(),
   FACEBOOK_CLIENT_SECRET: Joi.string().required(),
   FACEBOOK_CALLBACK_URL: Joi.string().required(),
+  FIREBASE_TYPE: Joi.string().required(),
+  FIREBASE_PROJECT_ID: Joi.string().required(),
+  FIREBASE_PRIVATE_KEY_ID: Joi.string().required(),
+  FIREBASE_PRIVATE_KEY: Joi.string().required(),
+  FIREBASE_CLIENT_EMAIL: Joi.string().required(),
+  FIREBASE_CLIENT_ID: Joi.string().required(),
+  FIREBASE_AUTH_URI: Joi.string().required(),
+  FIREBASE_TOKEN_URI: Joi.string().required(),
+  FIREBASE_AUTH_PROVIDER_X509_CERT_URL: Joi.string().required(),
+  FIREBASE_CLIENT_X509_CERT_URL: Joi.string().required(),
+  FIREBASE_UNIVERSE_DOMAIN: Joi.string().required(),
+  FIREBASE_STORAGE_BUCKET: Joi.string().required(),
 });
 
 const { value: validatedEnv, error } = envSchema
@@ -89,6 +101,23 @@ const config = {
       client_id: validatedEnv.FACEBOOK_CLIENT_ID,
       client_secret: validatedEnv.FACEBOOK_CLIENT_SECRET,
       callback_url: validatedEnv.FACEBOOK_CALLBACK_URL,
+    },
+    firebase: {
+      storageBucket: validatedEnv.FIREBASE_STORAGE_BUCKET,
+      credentials: {
+        type: validatedEnv.FIREBASE_TYPE,
+        project_id: validatedEnv.FIREBASE_PROJECT_ID,
+        private_key_id: validatedEnv.FIREBASE_PRIVATE_KEY_ID,
+        private_key: validatedEnv.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+        client_email: validatedEnv.FIREBASE_CLIENT_EMAIL,
+        client_id: validatedEnv.FIREBASE_CLIENT_ID,
+        auth_uri: validatedEnv.FIREBASE_AUTH_URI,
+        token_uri: validatedEnv.FIREBASE_TOKEN_URI,
+        auth_provider_x509_cert_url:
+          validatedEnv.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+        client_x509_cert_url: validatedEnv.FIREBASE_CLIENT_X509_CERT_URL,
+        universe_domain: validatedEnv.FIREBASE_UNIVERSE_DOMAIN,
+      },
     },
   },
 } as const;
