@@ -10,7 +10,6 @@ module.exports = {
           type: Sequelize.UUID,
           allowNull: false,
           primaryKey: true,
-          autoIncrement: true,
         },
         name: { type: Sequelize.STRING, allowNull: false },
         description: { type: Sequelize.STRING, allowNull: false },
@@ -20,8 +19,8 @@ module.exports = {
         status: {
           type: Sequelize.ENUM,
           allowNull: false,
-          values: [EquipmentsStatus.AVAILABLE, EquipmentsStatus.TAKEN],
-          defaultValue: EquipmentsStatus.AVAILABLE,
+          values: ["AVAILABLE", "TAKEN"],
+          defaultValue: "AVAILABLE",
         },
         category_id: {
           type: Sequelize.UUID,
