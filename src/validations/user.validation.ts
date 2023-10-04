@@ -5,7 +5,8 @@ export const updateSchema = {
     first_name: Joi.string(),
     last_name: Joi.string(),
     phone: Joi.string(),
-    address: Joi.string(),
+    wilaya: Joi.string(),
+    town: Joi.string(),
   }),
 };
 

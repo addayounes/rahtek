@@ -53,7 +53,10 @@ export const updateUserPassword = async (
 export const updateUser = async (
   id: string,
   data: Partial<
-    Pick<IUserAttributes, "first_name" | "last_name" | "phone" | "address">
+    Pick<
+      IUserAttributes,
+      "first_name" | "last_name" | "phone" | "wilaya" | "town"
+    >
   >
 ) => {
   try {

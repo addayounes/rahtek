@@ -8,7 +8,8 @@ module.exports = {
       last_name: { type: Sequelize.STRING, allowNull: false },
       email: { type: Sequelize.STRING, allowNull: true, unique: true },
       phone: { type: Sequelize.STRING, allowNull: true, unique: true },
-      address: { type: Sequelize.STRING, allowNull: true },
+      wilaya: { type: Sequelize.STRING, allowNull: true },
+      town: { type: Sequelize.STRING, allowNull: true },
       identity_card: { type: Sequelize.STRING, allowNull: true },
       role: {
         type: Sequelize.STRING,
