@@ -4,7 +4,7 @@ import type { Response, Request } from "express";
 import * as equipmentService from "../service/equipment.service";
 
 export const handleCreateEquipment = catchAsync(
-  async (req: Request, res: Response) => {
+  async (req: any, res: Response) => {
     const equipment = await equipmentService.createEquipment({
       ...req.body,
       published_by: req.user?.id,

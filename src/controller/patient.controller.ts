@@ -1,10 +1,10 @@
 import httpStatus from "http-status";
 import catchAsync from "../utils/catchAsync";
-import type { Response, Request } from "express";
+import type { Response } from "express";
 import * as patientService from "../service/patient.service";
 
 export const handleCreatePatient = catchAsync(
-  async (req: Request, res: Response) => {
+  async (req: any, res: Response) => {
     const patient = await patientService.createPatient({
       ...req.body,
       represented_by: req.user.id,
