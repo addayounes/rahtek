@@ -3,6 +3,7 @@ import authRouter from "./auth.route";
 import patientRouter from "./patient.route";
 import equipmentRouter from "./equipment.route";
 import orderRouter from "./order.route";
+import userRouter from "./user.route";
 
 const mainRouter = Router();
 
@@ -13,5 +14,7 @@ mainRouter.use("/patient", patientRouter);
 mainRouter.use("/equipment", equipmentRouter);
 
 mainRouter.use("/order", orderRouter);
+
+mainRouter.use("/user", userRouter);
 
 export { mainRouter };

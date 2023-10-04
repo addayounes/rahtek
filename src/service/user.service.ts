@@ -1,6 +1,8 @@
+import fs from "fs";
 import * as argon2 from "argon2";
-import { IUserAttributes, User } from "../models/user";
 import logger from "../middleware/logger";
+import { uploadPhoto } from "..//utils/uploadPhoto";
+import { IUserAttributes, User } from "../models/user";
 
 export const getUserById = async (id: string) => {
   try {
@@ -55,7 +57,13 @@ export const updateUser = async (
   data: Partial<
     Pick<
       IUserAttributes,
-      "first_name" | "last_name" | "phone" | "wilaya" | "town"
+      | "first_name"
+      | "last_name"
+      | "phone"
+      | "wilaya"
+      | "town"
+      | "photo"
+      | "identity_card"
     >
   >
 ) => {
@@ -65,6 +73,29 @@ export const updateUser = async (
     if (!result[0]) throw new Error();
 
     return { success: true };
+  } catch (error) {
+    logger.error(error);
+    return null;
+  }
+};
+
+export const updateUserPhoto = async (id: string, file: any) => {
+  try {
+    // upload the file to google cloud
+    const uploadResult: any = await uploadPhoto(
+      file,
+      `photos/${file.filename}`
+    );
+
+    if (uploadResult?.error) return uploadResult.error;
+
+    // delete the file from the server
+    fs.unlinkSync(file.path);
+
+    // update the user's photo link
+    await updateUser(id, { photo: uploadResult });
+
+    return { url: uploadResult };
   } catch (error) {
     logger.error(error);
     return null;
