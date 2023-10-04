@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { TokenType } from "../types/token";
 import { WhereOptions } from "sequelize";
 import { IRefreshTokenAttributes, RefreshToken } from "../models/refreshToken";
@@ -11,6 +12,7 @@ export const saveToken = async (
 ) => {
   try {
     await RefreshToken.create({
+      id: randomUUID(),
       token,
       userId,
       type,

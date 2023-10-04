@@ -34,5 +34,5 @@ export const RefreshToken = sequelize.define<
       onDelete: "CASCADE",
     },
   },
-  { tableName: "RefreshTokens" }
+  { tableName: "RefreshTokens", timestamps: false }
 );

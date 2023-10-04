@@ -25,7 +25,7 @@ module.exports = {
           onDelete: "CASCADE",
         },
       },
-      { tableName: "RefreshTokens" }
+      { tableName: "RefreshTokens", timestamps: false }
     );
   },
 
