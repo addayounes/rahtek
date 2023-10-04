@@ -1,5 +1,5 @@
 import * as argon2 from "argon2";
-import { User } from "../models/user";
+import { IUserAttributes, User } from "../models/user";
 import logger from "../middleware/logger";
 
 export const getUserById = async (id: string) => {
@@ -47,5 +47,23 @@ export const updateUserPassword = async (
   } catch (error: any) {
     logger.error(error);
     return { error: error?.message };
+  }
+};
+
+export const updateUser = async (
+  id: string,
+  data: Partial<
+    Pick<IUserAttributes, "first_name" | "last_name" | "phone" | "address">
+  >
+) => {
+  try {
+    const result = await User.update(data, { where: { id } });
+
+    if (!result[0]) throw new Error();
+
+    return { success: true };
+  } catch (error) {
+    logger.error(error);
+    return null;
   }
 };
