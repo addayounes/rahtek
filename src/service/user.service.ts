@@ -107,7 +107,7 @@ export const updateUserIdentityCard = async (id: string, file: any) => {
     // upload the file to google cloud
     const uploadResult: any = await uploadPhoto(
       file,
-      `identity/${file.filename}`
+      `identity_cards/${file.filename}`
     );
 
     if (uploadResult?.error) return uploadResult.error;

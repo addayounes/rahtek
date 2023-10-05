@@ -11,7 +11,7 @@ export const uploadPhoto = async (photo: any, fileName?: string) => {
         metadata: { contentType: photo.mimetype },
       },
       async (err, file) => {
-        if (err || !file) reject({ error: "Error uploading photo:" });
+        if (err || !file) reject({ error: "Error uploading photo" });
 
         const publicUrl = await getDownloadURL(file as any);
 

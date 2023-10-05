@@ -1,5 +1,7 @@
+import fs from "fs";
 import { randomUUID } from "crypto";
 import logger from "../middleware/logger";
+import { uploadPhoto } from "../utils/uploadPhoto";
 import { IPatientAttributes, Patient } from "../models/patient";
 
 export const createPatient = async (data: Omit<IPatientAttributes, "id">) => {
@@ -53,5 +55,38 @@ export const getUserPatients = async (userId: string) => {
   } catch (error: any) {
     logger.error(error);
     return { error: error?.message };
+  }
+};
+
+export const getPatientById = async (id: string) => {
+  try {
+    const result = await Patient.findOne({ where: { id } });
+    return result?.dataValues;
+  } catch (error: any) {
+    logger.error(error);
+    return { error: error?.message };
+  }
+};
+
+export const uploadPatientMedicalRecord = async (id: string, file: any) => {
+  try {
+    // upload the file to google cloud
+    const uploadResult: any = await uploadPhoto(
+      file,
+      `medical_records/${file.filename}`
+    );
+
+    if (uploadResult?.error) return uploadResult.error;
+
+    // delete the file from the server
+    fs.unlinkSync(file.path);
+
+    // update the patient's medical record link
+    await updatePatient(id, { medical_record: uploadResult });
+
+    return { url: uploadResult };
+  } catch (error) {
+    logger.error(error);
+    return null;
   }
 };

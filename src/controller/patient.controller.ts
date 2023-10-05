@@ -36,3 +36,31 @@ export const handleGetUserPatients = catchAsync(
     return res.json(result);
   }
 );
+
+export const handleUploadPatientMedicalRecord = catchAsync(
+  async (req: any, res: Response) => {
+    const patient: any = await patientService.getPatientById(req.params.id);
+
+    if (!patient)
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ error: "Patient doesn't exist." });
+
+    if (patient.represented_by !== req.user.id)
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ error: "Patient isn't associated with the current user." });
+
+    if (!req.file)
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ error: "No file uploaded." });
+
+    const result = await patientService.uploadPatientMedicalRecord(
+      req.params.id,
+      req.file
+    );
+
+    return res.json(result);
+  }
+);
