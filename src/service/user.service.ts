@@ -101,3 +101,26 @@ export const updateUserPhoto = async (id: string, file: any) => {
     return null;
   }
 };
+
+export const updateUserIdentityCard = async (id: string, file: any) => {
+  try {
+    // upload the file to google cloud
+    const uploadResult: any = await uploadPhoto(
+      file,
+      `identity/${file.filename}`
+    );
+
+    if (uploadResult?.error) return uploadResult.error;
+
+    // delete the file from the server
+    fs.unlinkSync(file.path);
+
+    // update the user's photo link
+    await updateUser(id, { identity_card: uploadResult });
+
+    return { url: uploadResult };
+  } catch (error) {
+    logger.error(error);
+    return null;
+  }
+};

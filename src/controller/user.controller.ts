@@ -28,3 +28,17 @@ export const handleUploadUserPhoto = catchAsync(
     return res.json(result);
   }
 );
+
+export const handleUploadUserIdentityCard = catchAsync(
+  async (req: any, res: Response) => {
+    if (!req.file)
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ error: "No file uploaded." });
+    const result = await userService.updateUserIdentityCard(
+      req.user?.id,
+      req.file
+    );
+    return res.json(result);
+  }
+);

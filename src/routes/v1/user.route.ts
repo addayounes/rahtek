@@ -9,6 +9,7 @@ import {
 import {
   handleUpdateUser,
   handleUpdateUserPassword,
+  handleUploadUserIdentityCard,
   handleUploadUserPhoto,
 } from "../../controller/user.controller";
 
@@ -25,5 +26,9 @@ userRouter
 userRouter
   .route("/current/photo/upload")
   .post(isAuth, multer.single("photo"), handleUploadUserPhoto);
+
+userRouter
+  .route("/current/identity/upload")
+  .post(isAuth, multer.single("identity"), handleUploadUserIdentityCard);
 
 export default userRouter;
