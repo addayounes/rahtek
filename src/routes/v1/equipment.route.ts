@@ -15,12 +15,18 @@ import {
   handleGetEquipmentById,
 } from "../../controller/equipment.controller";
 import isAuth from "../../middleware/isAuth";
+import multer from "../../lib/multer";
 
 const equipmentRouter = Router();
 
 equipmentRouter
   .route("/")
-  .post(isAuth, validate(createSchema), handleCreateEquipment)
+  .post(
+    isAuth,
+    multer.single("photo"),
+    validate(createSchema),
+    handleCreateEquipment
+  )
   .get(validate(getSchema), handleGetEquipments);
 
 equipmentRouter

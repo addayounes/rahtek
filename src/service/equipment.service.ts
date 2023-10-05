@@ -1,6 +1,8 @@
+import fs from "fs";
 import { Op } from "sequelize";
 import { randomUUID } from "crypto";
 import logger from "../middleware/logger";
+import { uploadPhoto } from "../utils/uploadPhoto";
 import { Equipment, IEquipmentAttributes } from "../models/equipment";
 
 export const createEquipment = async (
@@ -99,5 +101,25 @@ export const getEquipmentById = async (id: string) => {
   } catch (error: any) {
     logger.error(error);
     return { error: error?.message };
+  }
+};
+
+export const updateEquipmentPhoto = async (file: any) => {
+  try {
+    // upload the file to google cloud
+    const uploadResult: any = await uploadPhoto(
+      file,
+      `equipments/${file.filename}`
+    );
+
+    if (uploadResult?.error) return uploadResult.error;
+
+    // delete the file from the server
+    fs.unlinkSync(file.path);
+
+    return { url: uploadResult };
+  } catch (error) {
+    logger.error(error);
+    return null;
   }
 };

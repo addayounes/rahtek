@@ -5,7 +5,6 @@ export const createSchema = {
   body: Joi.object().keys({
     name: Joi.string().required().min(1),
     description: Joi.string().required().min(1),
-    photo: Joi.string().required(),
     wilaya: Joi.string().required(),
     town: Joi.string().required(),
     category_id: Joi.string().required(),
@@ -19,7 +18,6 @@ export const updateSchema = {
   body: Joi.object().keys({
     name: Joi.string().min(1),
     description: Joi.string().min(1),
-    photo: Joi.string(),
     wilaya: Joi.string(),
     town: Joi.string(),
     category_id: Joi.string(),
