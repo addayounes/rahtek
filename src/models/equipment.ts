@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
 import { EquipmentsStatus } from "../types/equipment";
+import { User } from "./user";
 
 export interface IEquipmentAttributes {
   id: number;
@@ -49,3 +50,6 @@ export const Equipment = sequelize.define<Model<IEquipmentAttributes, {}>>(
   },
   { tableName: "Equipments", timestamps: true }
 );
+
+User.hasMany(Equipment, { foreignKey: "id", onDelete: "CASCADE" });
+Equipment.belongsTo(User, { foreignKey: "published_by", as: "user" });

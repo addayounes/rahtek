@@ -36,7 +36,7 @@ app.use(compression({ filter: compressFilter }));
 app.use(
   cors({
     // origin is given a array if we want to have multiple origins later
-    origin: String(config.cors.cors_origin).split("|"),
+    origin: "*",
     credentials: true,
   })
 );
