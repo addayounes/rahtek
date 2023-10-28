@@ -30,6 +30,12 @@ export const deleteSchema = {
   }),
 };
 
+export const getBySlugSchema = {
+  params: Joi.object().keys({
+    slug: Joi.string().required(),
+  }),
+};
+
 export const getSchema = {
   query: Joi.object().keys({
     status: Joi.string().valid(
