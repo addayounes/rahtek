@@ -17,5 +17,5 @@ export const Category = sequelize.define<Model<ICategoryAttributes, {}>>(
     },
     name: { type: DataTypes.STRING, allowNull: false },
   },
-  { tableName: "Categories" }
+  { tableName: "Categories", timestamps: true }
 );

@@ -5,6 +5,7 @@ import logger from "../middleware/logger";
 import { uploadPhoto } from "../utils/uploadPhoto";
 import { Equipment, IEquipmentAttributes } from "../models/equipment";
 import { User } from "../models/user";
+import { Category } from "../models/category";
 
 export const createEquipment = async (
   data: Omit<IEquipmentAttributes, "id" | "status">
@@ -99,7 +100,10 @@ export const getEquipmentById = async (id: string) => {
   try {
     const result = await Equipment.findOne({
       where: { id },
-      include: [{ model: User, as: "user" }],
+      include: [
+        { model: User, as: "user" },
+        { model: Category, as: "category" },
+      ],
     });
     return result;
   } catch (error: any) {
@@ -112,7 +116,10 @@ export const getEquipmentBySlug = async (slug: string) => {
   try {
     const result = await Equipment.findOne({
       where: { slug },
-      include: [{ model: User, as: "user" }],
+      include: [
+        { model: User, as: "user" },
+        { model: Category, as: "category" },
+      ],
     });
     return result;
   } catch (error: any) {

@@ -3,6 +3,7 @@ import sequelize from "../config/sequelize";
 import { EquipmentsStatus } from "../types/equipment";
 import { User } from "./user";
 import { createSlug } from "../utils/createSlug";
+import { Category } from "./category";
 
 export interface IEquipmentAttributes {
   id: number;
@@ -69,3 +70,6 @@ export const Equipment = sequelize.define<Model<IEquipmentAttributes, {}>>(
 
 User.hasMany(Equipment, { foreignKey: "id", onDelete: "CASCADE" });
 Equipment.belongsTo(User, { foreignKey: "published_by", as: "user" });
+
+Category.hasMany(Equipment, { foreignKey: "id", onDelete: "CASCADE" });
+Equipment.belongsTo(Category, { foreignKey: "category_id", as: "category" });
