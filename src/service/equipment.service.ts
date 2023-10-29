@@ -72,16 +72,17 @@ export const getEquipments = async (options: any) => {
     if (options.wilaya) where.wilaya = options.wilaya;
     if (options.town) where.town = options.town;
 
-    if (options.search)
+    if (options.search) {
       where = {
         ...where,
         [Op.or]: [
-          { name: { [Op.like]: `%${options.search}%` } },
-          { description: { [Op.like]: `%${options.search}%` } },
-          { wilaya: { [Op.like]: `%${options.search}%` } },
-          { town: { [Op.like]: `%${options.search}%` } },
+          { name: { [Op.iLike]: `%${options.search}%` } },
+          { description: { [Op.iLike]: `%${options.search}%` } },
+          { wilaya: { [Op.iLike]: `%${options.search}%` } },
+          { town: { [Op.iLike]: `%${options.search}%` } },
         ],
       };
+    }
 
     const result = await Equipment.findAll({
       where,

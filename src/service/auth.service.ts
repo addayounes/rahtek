@@ -16,6 +16,7 @@ import { randomUUID } from "crypto";
 import { TokenType } from "../types/token";
 import { Profile, VerifyCallback } from "passport-google-oauth20";
 import { Profile as FacebookProfile } from "passport-facebook";
+import { getUserById } from "./user.service";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -130,8 +131,9 @@ export const refresh = async (refreshToken: string) => {
     if (!tokenPayload.userId) return { message: "Token expired" };
 
     const newTokens = await generateTokens(tokenPayload.userId);
+    const user = await getUserById(tokenExists.userId);
 
-    return { ...newTokens };
+    return { ...newTokens, user };
   } catch (error: any) {
     logger.error(error);
     return { message: error?.message };
@@ -189,7 +191,7 @@ export const verifyOTP = async (phone: string, code: string): Promise<any> => {
 export const generateTokens = async (userId: string) => {
   try {
     const accessToken = await createAccessToken(userId);
-    const refreshToken = createRefreshToken(userId);
+    const refreshToken = await createRefreshToken(userId);
 
     // add refresh token to db
     await tokenService.saveToken(refreshToken, userId, TokenType.REFRESH);
