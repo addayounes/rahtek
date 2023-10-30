@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
 import { UserRoles } from "../types/user";
+import { createSlug } from "../utils/createSlug";
 
 export interface IUserAttributes {
   id: string;
@@ -10,6 +11,7 @@ export interface IUserAttributes {
   phone: string;
   wilaya: string | null;
   town: string | null;
+  slug: string;
   photo: string | null;
   identity_card: string | null;
   role: UserRoles;
@@ -28,6 +30,7 @@ export const User = sequelize.define<Model<IUserAttributes, {}>>(
     phone: { type: DataTypes.STRING, allowNull: true, unique: true },
     wilaya: { type: DataTypes.STRING, allowNull: true },
     town: { type: DataTypes.STRING, allowNull: true },
+    slug: { type: DataTypes.STRING, allowNull: true },
     photo: { type: DataTypes.STRING, allowNull: true },
     identity_card: { type: DataTypes.STRING, allowNull: true },
     role: {
@@ -42,5 +45,14 @@ export const User = sequelize.define<Model<IUserAttributes, {}>>(
   {
     tableName: "Users",
     timestamps: true,
+    hooks: {
+      beforeCreate: (instance) => {
+        const first_name = instance.get("first_name") as string;
+        const last_name = instance.get("last_name") as string;
+        const randomNumber = Math.floor(Math.random() * 1000);
+        const slugText = `${first_name}${last_name}${randomNumber}`;
+        instance.set("slug", slugText.toLowerCase());
+      },
+    },
   }
 );
