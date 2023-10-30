@@ -12,6 +12,8 @@ export interface IEquipmentAttributes {
   photo: string;
   wilaya: string;
   town: string;
+  wilaya_ar: string;
+  town_ar: string;
   slug: string;
   status: EquipmentsStatus;
   category_id: string;
@@ -32,6 +34,8 @@ export const Equipment = sequelize.define<Model<IEquipmentAttributes, {}>>(
     photo: { type: DataTypes.STRING, allowNull: false },
     wilaya: { type: DataTypes.STRING, allowNull: false },
     town: { type: DataTypes.STRING, allowNull: false },
+    wilaya_ar: { type: DataTypes.STRING, allowNull: false },
+    town_ar: { type: DataTypes.STRING, allowNull: false },
     slug: { type: DataTypes.STRING, allowNull: true, unique: true },
     status: {
       type: DataTypes.ENUM,

@@ -16,6 +16,8 @@ module.exports = {
                 photo: { type: Sequelize.STRING, allowNull: false },
                 wilaya: { type: Sequelize.STRING, allowNull: false },
                 town: { type: Sequelize.STRING, allowNull: false },
+                wilaya_ar: { type: Sequelize.STRING, allowNull: false },
+                town_ar: { type: Sequelize.STRING, allowNull: false },
                 slug: { type: Sequelize.STRING, allowNull: true, unique: true },
                 status: {
                     type: Sequelize.ENUM,
