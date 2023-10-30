@@ -55,7 +55,10 @@ export const deleteEquipment = async (id: string) => {
 
 export const getUserEquipments = async (userId: string) => {
   try {
-    const result = await Equipment.findAll({ where: { published_by: userId } });
+    const result = await Equipment.findAll({
+      where: { published_by: userId },
+      include: { all: true },
+    });
     return result;
   } catch (error: any) {
     logger.error(error);
