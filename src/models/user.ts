@@ -10,6 +10,8 @@ export interface IUserAttributes {
   phone: string;
   wilaya: string | null;
   town: string | null;
+  wilaya_ar: string;
+  town_ar: string;
   slug: string;
   photo: string | null;
   identity_card: string | null;
@@ -29,6 +31,8 @@ export const User = sequelize.define<Model<IUserAttributes, {}>>(
     phone: { type: DataTypes.STRING, allowNull: true, unique: true },
     wilaya: { type: DataTypes.STRING, allowNull: true },
     town: { type: DataTypes.STRING, allowNull: true },
+    wilaya_ar: { type: DataTypes.STRING, allowNull: true },
+    town_ar: { type: DataTypes.STRING, allowNull: true },
     slug: { type: DataTypes.STRING, allowNull: true },
     photo: { type: DataTypes.STRING, allowNull: true },
     identity_card: { type: DataTypes.STRING, allowNull: true },
