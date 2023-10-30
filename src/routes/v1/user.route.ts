@@ -7,13 +7,17 @@ import {
   updateSchema,
 } from "../../validations/user.validation";
 import {
+  handleGetUserBySlug,
   handleUpdateUser,
   handleUpdateUserPassword,
   handleUploadUserIdentityCard,
   handleUploadUserPhoto,
 } from "../../controller/user.controller";
+import { getBySlugSchema } from "../../validations/equipment.validation";
 
 const userRouter = Router();
+
+userRouter.route("/:slug").get(validate(getBySlugSchema), handleGetUserBySlug);
 
 userRouter
   .route("/current/update")

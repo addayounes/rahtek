@@ -18,6 +18,14 @@ export const handleUpdateUser = catchAsync(async (req: any, res: Response) => {
   return res.json(result);
 });
 
+export const handleGetUserBySlug = catchAsync(
+  async (req: any, res: Response) => {
+    const result = await userService.getUserBySlug(req.params.slug);
+    if (!result) return res.status(httpStatus.NOT_FOUND).json(result);
+    return res.json(result);
+  }
+);
+
 export const handleUploadUserPhoto = catchAsync(
   async (req: any, res: Response) => {
     if (!req.file)

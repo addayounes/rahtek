@@ -16,3 +16,9 @@ export const updatePasswordSchema = {
     newPassword: Joi.string().required(),
   }),
 };
+
+export const getBySlugSchema = {
+  params: Joi.object().keys({
+    slug: Joi.string().required(),
+  }),
+};

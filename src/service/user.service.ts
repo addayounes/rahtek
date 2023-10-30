@@ -17,6 +17,19 @@ export const getUserById = async (id: string) => {
   }
 };
 
+export const getUserBySlug = async (slug: string) => {
+  try {
+    const result = await User.findOne({ where: { slug } });
+
+    if (!result?.dataValues) throw new Error();
+
+    return result.dataValues;
+  } catch (error) {
+    logger.error(error);
+    return null;
+  }
+};
+
 export const updateUserPassword = async (
   id: string,
   { oldPassword, newPassword }: { oldPassword: string; newPassword: string }
