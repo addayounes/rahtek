@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
+import { User } from "./user";
 
 export interface IPatientAttributes {
   id: string;
@@ -32,3 +33,10 @@ export const Patient = sequelize.define<Model<IPatientAttributes, {}>>(
     timestamps: true,
   }
 );
+
+User.hasMany(Patient, {
+  foreignKey: "id",
+  as: "patients",
+  onDelete: "CASCADE",
+});
+Patient.belongsTo(User, { foreignKey: "represented_by", as: "user" });

@@ -50,7 +50,10 @@ export const deletePatient = async (id: string) => {
 
 export const getUserPatients = async (userId: string) => {
   try {
-    const result = await Patient.findAll({ where: { represented_by: userId } });
+    const result = await Patient.findAll({
+      where: { represented_by: userId },
+      include: { all: true },
+    });
     return result;
   } catch (error: any) {
     logger.error(error);
@@ -60,7 +63,10 @@ export const getUserPatients = async (userId: string) => {
 
 export const getPatientById = async (id: string) => {
   try {
-    const result = await Patient.findOne({ where: { id } });
+    const result = await Patient.findOne({
+      where: { id },
+      include: { all: true },
+    });
     return result?.dataValues;
   } catch (error: any) {
     logger.error(error);
