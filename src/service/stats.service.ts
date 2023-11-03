@@ -2,6 +2,7 @@ import logger from "../middleware/logger";
 import { Order } from "../models/order";
 import { Equipment } from "../models/equipment";
 import { OrderStatus } from "../types/order";
+import { EquipmentsStatus } from "../types/equipment";
 
 export const getDashboardStats = async (id: string) => {
   try {
@@ -25,8 +26,11 @@ export const getDashboardStats = async (id: string) => {
       include: { model: Equipment, where: { published_by: id } },
     });
 
-    const equipmentCount = await Equipment.count({
-      where: { published_by: id },
+    const availableEquipmentCount = await Equipment.count({
+      where: { published_by: id, status: EquipmentsStatus.AVAILABLE },
+    });
+    const takenEquipmentCount = await Equipment.count({
+      where: { published_by: id, status: EquipmentsStatus.TAKEN },
     });
 
     return {
@@ -36,7 +40,10 @@ export const getDashboardStats = async (id: string) => {
         pending: pendingOrderCount,
         refused: refusedOrderCount,
       },
-      equipments: equipmentCount,
+      equipments: {
+        available: availableEquipmentCount,
+        taken: takenEquipmentCount,
+      },
     };
   } catch (error) {
     logger.error(error);
