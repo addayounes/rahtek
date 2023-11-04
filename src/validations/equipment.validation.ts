@@ -7,6 +7,8 @@ export const createSchema = {
     description: Joi.string().required().min(1),
     wilaya: Joi.string().required(),
     town: Joi.string().required(),
+    wilaya_ar: Joi.string().required(),
+    town_ar: Joi.string().required(),
     category_id: Joi.string().required(),
   }),
 };
