@@ -15,6 +15,7 @@ import {
   handleUpdateEquipment,
   handleGetEquipmentById,
   handleGetEquipmentBySlug,
+  handleGetCurrentUserEquipments,
 } from "../../controller/equipment.controller";
 import isAuth from "../../middleware/isAuth";
 import multer from "../../lib/multer";
@@ -44,5 +45,9 @@ equipmentRouter
 equipmentRouter
   .route("/user/:id")
   .get(validate(deleteSchema), handleGetUserEquipments);
+
+equipmentRouter
+  .route("/current/user")
+  .get(isAuth, handleGetCurrentUserEquipments);
 
 export default equipmentRouter;

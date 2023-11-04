@@ -65,6 +65,16 @@ export const handleGetEquipments = catchAsync(
   }
 );
 
+export const handleGetCurrentUserEquipments = catchAsync(
+  async (req: any, res: Response) => {
+    const result = await equipmentService.getEquipments({
+      ...req.query,
+      user: req.user?.id,
+    });
+    return res.json(result);
+  }
+);
+
 export const handleGetEquipmentById = catchAsync(
   async (req: any, res: Response) => {
     const result = await equipmentService.getEquipmentById(req.params?.id);
