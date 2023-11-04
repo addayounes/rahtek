@@ -133,6 +133,16 @@ export const getEquipmentBySlug = async (slug: string) => {
   }
 };
 
+export const getCategories = async () => {
+  try {
+    const result = await Category.findAll();
+    return result;
+  } catch (error: any) {
+    logger.error(error);
+    return { error: error?.message };
+  }
+};
+
 export const updateEquipmentPhoto = async (file: any) => {
   try {
     // upload the file to google cloud

@@ -88,3 +88,10 @@ export const handleGetEquipmentBySlug = catchAsync(
     return res.json(result);
   }
 );
+
+export const handleGetCategories = catchAsync(
+  async (_req: Request, res: Response) => {
+    const result = await equipmentService.getCategories();
+    return res.json(result);
+  }
+);
