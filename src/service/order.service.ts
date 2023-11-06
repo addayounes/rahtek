@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
-import { User } from "../models/user";
 import logger from "../middleware/logger";
+import { Equipment } from "../models/equipment";
 import { Order, IOrderAttributes } from "../models/order";
 
 export const createOrder = async (data: Omit<IOrderAttributes, "status">) => {
@@ -64,9 +64,11 @@ export const getUserOrders = async (userId: string) => {
 
 export const getSupplierOrders = async (userId: string) => {
   try {
-    // TODO: add filters, sort, and search
     const result = await Order.findAll({
-      include: [{ model: User, where: { id: userId } }, { all: true }],
+      include: [
+        { model: Equipment, where: { published_by: userId } },
+        { all: true },
+      ],
     });
     return result;
   } catch (error: any) {
