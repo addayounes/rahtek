@@ -16,7 +16,6 @@ import {
   handleGetEquipmentById,
   handleGetEquipmentBySlug,
   handleGetCurrentUserEquipments,
-  handleGetCategories,
 } from "../../controller/equipment.controller";
 import isAuth from "../../middleware/isAuth";
 import multer from "../../lib/multer";

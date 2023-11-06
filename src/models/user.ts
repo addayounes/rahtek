@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
 import { UserRoles } from "../types/user";
+import { ITown, IWilaya } from "../types/equipment";
 
 export interface IUserAttributes {
   id: string;
@@ -8,10 +9,8 @@ export interface IUserAttributes {
   last_name: string;
   email: string;
   phone: string;
-  wilaya: string | null;
-  town: string | null;
-  wilaya_ar: string;
-  town_ar: string;
+  wilaya: IWilaya | null;
+  town: ITown | null;
   slug: string;
   photo: string | null;
   identity_card: string | null;
@@ -29,10 +28,8 @@ export const User = sequelize.define<Model<IUserAttributes, {}>>(
     last_name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: true, unique: true },
     phone: { type: DataTypes.STRING, allowNull: true, unique: true },
-    wilaya: { type: DataTypes.STRING, allowNull: true },
-    town: { type: DataTypes.STRING, allowNull: true },
-    wilaya_ar: { type: DataTypes.STRING, allowNull: true },
-    town_ar: { type: DataTypes.STRING, allowNull: true },
+    wilaya: { type: DataTypes.JSONB, allowNull: true },
+    town: { type: DataTypes.JSONB, allowNull: true },
     slug: { type: DataTypes.STRING, allowNull: true },
     photo: { type: DataTypes.STRING, allowNull: true },
     identity_card: { type: DataTypes.STRING, allowNull: true },

@@ -1,6 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
-import { EquipmentsStatus } from "../types/equipment";
+import { EquipmentsStatus, ITown, IWilaya } from "../types/equipment";
 import { User } from "./user";
 import { createSlug } from "../utils/createSlug";
 import { Category } from "./category";
@@ -10,10 +10,8 @@ export interface IEquipmentAttributes {
   name: string;
   description: string;
   photo: string;
-  wilaya: string;
-  town: string;
-  wilaya_ar: string;
-  town_ar: string;
+  wilaya: IWilaya | null;
+  town: ITown | null;
   slug: string;
   status: EquipmentsStatus;
   category_id: string;
@@ -32,10 +30,8 @@ export const Equipment = sequelize.define<Model<IEquipmentAttributes, {}>>(
     name: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.STRING, allowNull: false },
     photo: { type: DataTypes.STRING, allowNull: false },
-    wilaya: { type: DataTypes.STRING, allowNull: false },
-    town: { type: DataTypes.STRING, allowNull: false },
-    wilaya_ar: { type: DataTypes.STRING, allowNull: false },
-    town_ar: { type: DataTypes.STRING, allowNull: false },
+    wilaya: { type: DataTypes.JSONB, allowNull: true },
+    town: { type: DataTypes.JSONB, allowNull: true },
     slug: { type: DataTypes.STRING, allowNull: true, unique: true },
     status: {
       type: DataTypes.ENUM,
@@ -62,10 +58,10 @@ export const Equipment = sequelize.define<Model<IEquipmentAttributes, {}>>(
     hooks: {
       beforeCreate: (instance) => {
         const name = instance.get("name") as string;
-        const wilaya = instance.get("wilaya") as string;
-        const town = instance.get("town") as string;
+        const wilaya = instance.get("wilaya") as IWilaya;
+        const town = instance.get("town") as ITown;
         const randomNumber = Math.floor(Math.random() * 10000);
-        const slugText = `${name} ${wilaya} ${randomNumber} ${town} `;
+        const slugText = `${name} ${wilaya?.name} ${randomNumber} ${town?.name} `;
         instance.set("slug", createSlug(slugText));
       },
     },
