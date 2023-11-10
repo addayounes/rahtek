@@ -72,8 +72,8 @@ export const getEquipments = async (options: any) => {
 
     if (options.status) where.status = options.status;
     if (options.category) where.category_id = options.category;
-    if (options.wilaya) where.wilaya = options.wilaya;
-    if (options.town) where.town = options.town;
+    if (options.wilaya) where.wilaya = { name: options.wilaya };
+    if (options.town) where.town = { name: options.town };
     if (options.user) where.published_by = options.user;
 
     if (options.search) {
@@ -82,8 +82,8 @@ export const getEquipments = async (options: any) => {
         [Op.or]: [
           { name: { [Op.iLike]: `%${options.search}%` } },
           { description: { [Op.iLike]: `%${options.search}%` } },
-          { wilaya: { [Op.iLike]: `%${options.search}%` } },
-          { town: { [Op.iLike]: `%${options.search}%` } },
+          { "wilaya.name": { [Op.iLike]: `%${options.search}%` } },
+          { "town.name": { [Op.iLike]: `%${options.search}%` } },
         ],
       };
     }
