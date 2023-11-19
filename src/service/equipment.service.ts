@@ -72,8 +72,8 @@ export const getEquipments = async (options: any) => {
 
     if (options.status) where.status = options.status;
     if (options.category) where.category_id = options.category;
-    if (options.wilaya) where.wilaya = { name: options.wilaya };
-    if (options.town) where.town = { name: options.town };
+    if (options.wilaya) where.wilaya = { id: options.wilaya };
+    if (options.town) where.town = { id: options.town };
     if (options.user) where.published_by = options.user;
 
     if (options.search) {
