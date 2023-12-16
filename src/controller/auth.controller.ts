@@ -40,18 +40,18 @@ export const handleRefresh = catchAsync(async (req: Request, res: Response) => {
   return res.json(result);
 });
 
-export const sendOTP = catchAsync(async (req: Request, res: Response) => {
-  const phone = req.body.phone;
-  const result = await authService.sendOTP(phone);
-  return res.json(result);
-});
+// export const sendOTP = catchAsync(async (req: Request, res: Response) => {
+//   const phone = req.body.phone;
+//   const result = await authService.sendOTP(phone);
+//   return res.json(result);
+// });
 
-export const verifyOTP = catchAsync(async (req: Request, res: Response) => {
-  const { phone, code } = req.body;
-  const result = await authService.verifyOTP(phone, code);
-  if (!result.success) return res.status(httpStatus.UNAUTHORIZED).json(result);
-  res.json(result);
-});
+// export const verifyOTP = catchAsync(async (req: Request, res: Response) => {
+//   const { phone, code } = req.body;
+//   const result = await authService.verifyOTP(phone, code);
+//   if (!result.success) return res.status(httpStatus.UNAUTHORIZED).json(result);
+//   res.json(result);
+// });
 
 export const completeRegistration = catchAsync(
   async (req: Request, res: Response) => {

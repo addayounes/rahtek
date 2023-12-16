@@ -9,8 +9,8 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
   refershSchema,
-  sendOTPSchema,
-  verifyOTPSchema,
+  // sendOTPSchema,
+  // verifyOTPSchema,
   completeRegistrationSchema,
 } from "../../validations/auth.validation";
 
@@ -26,13 +26,13 @@ authRouter.post(
   authController.handleLogout
 );
 
-authRouter.post("/send-otp", validate(sendOTPSchema), authController.sendOTP);
+// authRouter.post("/send-otp", validate(sendOTPSchema), authController.sendOTP);
 
-authRouter.post(
-  "/verify-otp",
-  validate(verifyOTPSchema),
-  authController.verifyOTP
-);
+// authRouter.post(
+//   "/verify-otp",
+//   validate(verifyOTPSchema),
+//   authController.verifyOTP
+// );
 
 authRouter.post(
   "/complete-registration/:token",
