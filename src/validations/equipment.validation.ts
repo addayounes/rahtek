@@ -50,3 +50,10 @@ export const getSchema = {
     pageSize: Joi.number().min(1),
   }),
 };
+
+export const getUserEquipmentsSchema = {
+  query: Joi.object().keys({
+    page: Joi.number().min(1),
+    pageSize: Joi.number().min(1),
+  }),
+};

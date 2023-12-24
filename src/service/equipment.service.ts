@@ -54,11 +54,20 @@ export const deleteEquipment = async (id: string) => {
   }
 };
 
-export const getUserEquipments = async (userId: string) => {
+export const getUserEquipments = async (
+  userId: string,
+  options: { page: number; pageSize: number }
+) => {
   try {
-    const result = await Equipment.findAll({
+    const pagination = getPaginationOptions({
+      page: options.page,
+      pageSize: options.pageSize,
+    });
+
+    const result = await Equipment.findAndCountAll({
       where: { published_by: userId },
       include: { all: true },
+      ...pagination,
     });
     return result;
   } catch (error: any) {

@@ -53,7 +53,10 @@ export const handleDeleteEquipment = catchAsync(
 
 export const handleGetUserEquipments = catchAsync(
   async (req: any, res: Response) => {
-    const result = await equipmentService.getUserEquipments(req.params.id);
+    const result = await equipmentService.getUserEquipments(req.params.id, {
+      page: req.query?.page,
+      pageSize: req.query?.pageSize,
+    });
     return res.json(result);
   }
 );
