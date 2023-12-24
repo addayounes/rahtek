@@ -6,6 +6,7 @@ import { uploadPhoto } from "../utils/uploadPhoto";
 import { Equipment, IEquipmentAttributes } from "../models/equipment";
 import { User } from "../models/user";
 import { Category } from "../models/category";
+import { getPaginationOptions } from "../utils/pagination";
 
 export const createEquipment = async (
   data: Omit<IEquipmentAttributes, "id" | "status">
@@ -88,10 +89,16 @@ export const getEquipments = async (options: any) => {
       };
     }
 
-    const result = await Equipment.findAll({
+    const pagination = getPaginationOptions({
+      page: options?.page,
+      pageSize: options?.pageSize,
+    });
+
+    const result = await Equipment.findAndCountAll({
       where,
       include: { all: true },
       order: ["createdAt"],
+      ...pagination,
     });
 
     return result;

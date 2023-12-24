@@ -46,5 +46,7 @@ export const getSchema = {
     wilaya: Joi.string().min(1),
     town: Joi.string().min(1),
     search: Joi.string().min(1),
+    page: Joi.number().min(1),
+    pageSize: Joi.number().min(1),
   }),
 };

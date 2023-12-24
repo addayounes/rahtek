@@ -48,6 +48,6 @@ equipmentRouter
 
 equipmentRouter
   .route("/current/user")
-  .get(isAuth, handleGetCurrentUserEquipments);
+  .get(isAuth, validate(getSchema), handleGetCurrentUserEquipments);
 
 export default equipmentRouter;
