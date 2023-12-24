@@ -3,6 +3,7 @@ import validate from "../../middleware/validate";
 import {
   createSchema,
   deleteSchema,
+  getSupplierEquipmentsSchema,
   updateSchema,
 } from "../../validations/order.validation";
 import {
@@ -40,6 +41,8 @@ orderRouter
 
 orderRouter.route("/user").get(isAuth, handleGetUserOrders);
 
-orderRouter.route("/supplier").get(isAuth, handleGetSupplierOrders);
+orderRouter
+  .route("/supplier")
+  .get(isAuth, validate(getSupplierEquipmentsSchema), handleGetSupplierOrders);
 
 export default orderRouter;

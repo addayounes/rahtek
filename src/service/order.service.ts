@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import logger from "../middleware/logger";
 import { Equipment } from "../models/equipment";
 import { Order, IOrderAttributes } from "../models/order";
+import { getPaginationOptions } from "../utils/pagination";
 
 export const createOrder = async (data: Omit<IOrderAttributes, "status">) => {
   try {
@@ -62,14 +63,24 @@ export const getUserOrders = async (userId: string) => {
   }
 };
 
-export const getSupplierOrders = async (userId: string) => {
+export const getSupplierOrders = async (
+  userId: string,
+  options: { page: number; pageSize: number }
+) => {
   try {
-    const result = await Order.findAll({
+    const pagination = getPaginationOptions({
+      page: options.page,
+      pageSize: options.pageSize,
+    });
+
+    const result = await Order.findAndCountAll({
       include: [
         { model: Equipment, where: { published_by: userId } },
         { all: true },
       ],
+      ...pagination,
     });
+
     return result;
   } catch (error: any) {
     logger.error(error);

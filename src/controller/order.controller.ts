@@ -84,7 +84,10 @@ export const handleGetSupplierOrders = catchAsync(
     if (req.user?.role !== UserRoles.SUPPLIER)
       return res.sendStatus(httpStatus.BAD_REQUEST);
 
-    const result = await orderService.getSupplierOrders(req.user.id);
+    const result = await orderService.getSupplierOrders(req.user.id, {
+      page: req.query?.page,
+      pageSize: req.query?.pageSize,
+    });
     return res.json(result);
   }
 );

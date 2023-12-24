@@ -31,3 +31,10 @@ export const deleteSchema = {
     id: Joi.string().required(),
   }),
 };
+
+export const getSupplierEquipmentsSchema = {
+  query: Joi.object().keys({
+    page: Joi.number().min(1),
+    pageSize: Joi.number().min(1),
+  }),
+};
