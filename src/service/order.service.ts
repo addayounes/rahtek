@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import logger from "../middleware/logger";
 import { EVENTS } from "../utils/socketEvents";
 import { Equipment } from "../models/equipment";
+import { getEquipmentById } from "./equipment.service";
 import { Order, IOrderAttributes } from "../models/order";
 import { getPaginationOptions } from "../utils/pagination";
 import { createNotification } from "./notification.service";
@@ -11,6 +12,19 @@ export const createOrder = async (data: Omit<IOrderAttributes, "status">) => {
     const result = await Order.create({ ...data, id: randomUUID() });
 
     if (!result.dataValues) throw new Error();
+
+    if (result?.dataValues) {
+      const equipment: any = await getEquipmentById(
+        result.dataValues.equipment_id
+      );
+
+      await createNotification({
+        from: result.dataValues.gaurantee_id,
+        to: equipment?.published_by,
+        event: EVENTS.REQUEST_CREATED,
+        payload: result.dataValues,
+      });
+    }
 
     return result.dataValues;
   } catch (error) {
@@ -35,7 +49,7 @@ export const updateOrder = async (
         from: (order.dataValues as any)?.Equipment?.dataValues?.published_by,
         to: order?.dataValues.gaurantee_id,
         event: EVENTS.REQUEST_UPDATE,
-        payload: data.status,
+        payload: order?.dataValues,
       });
     }
 
