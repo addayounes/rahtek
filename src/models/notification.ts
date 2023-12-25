@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
 import { SocketEvent } from "../utils/socketEvents";
+import { User } from "./user";
 
 export interface INotificationAttributes {
   id: string;
@@ -40,3 +41,7 @@ export const Notification = sequelize.define<
   },
   { tableName: "Notifications", timestamps: true }
 );
+
+User.hasMany(Notification, { foreignKey: "id", onDelete: "CASCADE" });
+Notification.belongsTo(User, { foreignKey: "from", as: "from_user" });
+Notification.belongsTo(User, { foreignKey: "to", as: "to_user" });

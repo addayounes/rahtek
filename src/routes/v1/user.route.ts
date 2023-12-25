@@ -8,6 +8,7 @@ import {
 } from "../../validations/user.validation";
 import {
   handleGetUserBySlug,
+  handleGetUserNotifications,
   handleUpdateUser,
   handleUpdateUserPassword,
   handleUploadUserIdentityCard,
@@ -34,5 +35,9 @@ userRouter
 userRouter
   .route("/current/identity/upload")
   .post(isAuth, multer.single("identity"), handleUploadUserIdentityCard);
+
+userRouter
+  .route("/current/notifications")
+  .get(isAuth, handleGetUserNotifications);
 
 export default userRouter;

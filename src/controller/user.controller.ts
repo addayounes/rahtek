@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import catchAsync from "../utils/catchAsync";
 import type { Response } from "express";
 import * as userService from "../service/user.service";
+import * as notificationService from "../service/notification.service";
 
 export const handleUpdateUserPassword = catchAsync(
   async (req: any, res: Response) => {
@@ -46,6 +47,16 @@ export const handleUploadUserIdentityCard = catchAsync(
     const result = await userService.updateUserIdentityCard(
       req.user?.id,
       req.file
+    );
+    return res.json(result);
+  }
+);
+
+export const handleGetUserNotifications = catchAsync(
+  async (req: any, res: Response) => {
+    const result = await notificationService.getUserNotifications(
+      req.user?.id,
+      req?.query
     );
     return res.json(result);
   }
