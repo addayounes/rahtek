@@ -8,14 +8,21 @@ interface ISocketClient {
 
 let clients: ISocketClient[] = [];
 
-const getClientBySocket = (socketId: string) =>
-  clients.find((c) => c.socketId === socketId);
-
 const getClientById = (userId: string) =>
   clients.find((c) => c.userId === userId);
 
 const addNewClient = (socketId: string, userId: string) => {
-  if (!!getClientBySocket(socketId)) return;
+  const clientExists = getClientById(userId);
+
+  if (!!clientExists) {
+    if (clientExists.socketId === socketId) return;
+
+    clients = clients.map((c) =>
+      c.userId === userId ? { socketId, userId } : c
+    );
+
+    return;
+  }
   clients.push({ socketId, userId });
 };
 

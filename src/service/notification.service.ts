@@ -2,8 +2,8 @@ import { io } from "../lib/socket";
 import { randomUUID } from "crypto";
 import { getClientById } from "./socket.service";
 import { SocketEvent } from "../utils/socketEvents";
-import { INotificationAttributes, Notification } from "../models/notification";
 import { getPaginationOptions } from "../utils/pagination";
+import { INotificationAttributes, Notification } from "../models/notification";
 
 export const createNotification = async (
   data: Omit<INotificationAttributes, "id" | "read">
@@ -15,7 +15,7 @@ export const createNotification = async (
   sendNotification(
     result.dataValues.to,
     result.dataValues.event,
-    result.dataValues.payload
+    result.dataValues
   );
 
   return result.dataValues;
