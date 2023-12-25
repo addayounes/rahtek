@@ -2,6 +2,7 @@ import app from "./app";
 import config from "./config/config";
 import sequelize from "./config/sequelize";
 import logger from "./middleware/logger";
+import "./service/socket.service";
 
 sequelize.sync().then(() => {
   const server = app.listen(Number(config.server.port), () => {

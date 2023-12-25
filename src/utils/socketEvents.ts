@@ -1,0 +1,4 @@
+export const EVENTS = {
+  NEW_CLIENT: "NEW_CLIENT",
+  REQUEST_UPDATE: "REQUEST_UPDATE",
+};

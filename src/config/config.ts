@@ -59,6 +59,9 @@ if (error) {
 
 const config = {
   node_env: validatedEnv.NODE_ENV,
+  webSocket: {
+    port: 8070,
+  },
   server: {
     port: validatedEnv.PORT,
     url: validatedEnv.SERVER_URL,
