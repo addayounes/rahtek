@@ -2,7 +2,7 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
 
 export interface ICategoryAttributes {
-  id: number;
+  id: string;
   name: string;
 }
 
@@ -13,7 +13,6 @@ export const Category = sequelize.define<Model<ICategoryAttributes, {}>>(
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
     },
     name: { type: DataTypes.STRING, allowNull: false },
   },

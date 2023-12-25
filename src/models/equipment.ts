@@ -6,7 +6,7 @@ import { createSlug } from "../utils/createSlug";
 import { Category } from "./category";
 
 export interface IEquipmentAttributes {
-  id: number;
+  id: string;
   name: string;
   description: string;
   photo: string;
@@ -25,7 +25,6 @@ export const Equipment = sequelize.define<Model<IEquipmentAttributes, {}>>(
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
     },
     name: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.STRING, allowNull: false },
