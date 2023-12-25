@@ -8,11 +8,14 @@ interface ISocketClient {
 
 let clients: ISocketClient[] = [];
 
-const getClient = (socketId: string) =>
+const getClientBySocket = (socketId: string) =>
   clients.find((c) => c.socketId === socketId);
 
+const getClientById = (userId: string) =>
+  clients.find((c) => c.userId === userId);
+
 const addNewClient = (socketId: string, userId: string) => {
-  if (!!getClient(socketId)) return;
+  if (!!getClientBySocket(socketId)) return;
   clients.push({ socketId, userId });
 };
 
@@ -29,3 +32,5 @@ io.on("connection", (socket) => {
     removeClient(socket.id);
   });
 });
+
+export { clients, getClientById };

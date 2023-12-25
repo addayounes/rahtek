@@ -8,6 +8,7 @@ export interface INotificationAttributes {
   to: string;
   event: SocketEvent;
   payload: any;
+  read: boolean;
 }
 
 export const Notification = sequelize.define<
@@ -35,6 +36,7 @@ export const Notification = sequelize.define<
     },
     event: { type: DataTypes.STRING, allowNull: false },
     payload: { type: DataTypes.JSONB, allowNull: true },
+    read: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
   },
   { tableName: "Notifications", timestamps: true }
 );

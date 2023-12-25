@@ -1,8 +1,10 @@
 import { randomUUID } from "crypto";
 import logger from "../middleware/logger";
+import { EVENTS } from "../utils/socketEvents";
 import { Equipment } from "../models/equipment";
 import { Order, IOrderAttributes } from "../models/order";
 import { getPaginationOptions } from "../utils/pagination";
+import { createNotification } from "./notification.service";
 
 export const createOrder = async (data: Omit<IOrderAttributes, "status">) => {
   try {
@@ -26,7 +28,16 @@ export const updateOrder = async (
 
     if (!result[0]) throw new Error();
 
-    const order = await Order.findOne({ where: { id } });
+    const order = await Order.findOne({ where: { id }, include: [Equipment] });
+
+    if (order?.dataValues) {
+      await createNotification({
+        from: (order.dataValues as any)?.Equipment?.dataValues?.published_by,
+        to: order?.dataValues.gaurantee_id,
+        event: EVENTS.REQUEST_UPDATE,
+        payload: data.status,
+      });
+    }
 
     return order?.dataValues;
   } catch (error) {

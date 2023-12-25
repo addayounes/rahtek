@@ -25,6 +25,7 @@ module.exports = {
         },
         event: { type: Sequelize.STRING, allowNull: false },
         payload: { type: Sequelize.JSONB, allowNull: true },
+        read: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
         createdAt: { type: Sequelize.DATE, allowNull: false },
         updatedAt: { type: Sequelize.DATE, allowNull: false },
       },
