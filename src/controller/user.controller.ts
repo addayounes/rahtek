@@ -61,3 +61,10 @@ export const handleGetUserNotifications = catchAsync(
     return res.json(result);
   }
 );
+
+export const handleReadAllNotifications = catchAsync(
+  async (req: any, res: Response) => {
+    const result = await notificationService.readAllNotifications(req.user?.id);
+    return res.json(result);
+  }
+);

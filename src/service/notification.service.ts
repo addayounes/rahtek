@@ -49,7 +49,27 @@ export const getUserNotifications = async (
       ...pagination,
     });
 
-    return result;
+    const unread = await Notification.count({
+      where: { to: userId, read: false },
+      include: { all: true },
+    });
+
+    return { ...result, unread };
+  } catch (error: any) {
+    console.log(error);
+  }
+};
+
+export const readAllNotifications = async (userId: string) => {
+  try {
+    const result = await Notification.update(
+      { read: true },
+      { where: { to: userId } }
+    );
+
+    if (!result[0]) throw new Error();
+
+    return { read: !!result[0] };
   } catch (error: any) {
     console.log(error);
   }

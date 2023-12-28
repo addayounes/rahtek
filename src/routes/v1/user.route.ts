@@ -9,6 +9,7 @@ import {
 import {
   handleGetUserBySlug,
   handleGetUserNotifications,
+  handleReadAllNotifications,
   handleUpdateUser,
   handleUpdateUserPassword,
   handleUploadUserIdentityCard,
@@ -39,5 +40,9 @@ userRouter
 userRouter
   .route("/current/notifications")
   .get(isAuth, handleGetUserNotifications);
+
+userRouter
+  .route("/current/notifications/read")
+  .patch(isAuth, handleReadAllNotifications);
 
 export default userRouter;
