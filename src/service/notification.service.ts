@@ -46,6 +46,7 @@ export const getUserNotifications = async (
     const result = await Notification.findAndCountAll({
       where: { to: userId },
       include: { all: true },
+      order: [["createdAt", "DESC"]],
       ...pagination,
     });
 
