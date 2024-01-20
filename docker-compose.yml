@@ -1,40 +1,39 @@
-version: '3.9'
+version: "3.9"
 
 services:
-  # Express Server
-  auth-service:
-    build: 
+  rahtek-backend:
+    build:
       context: .
       dockerfile: Dockerfile
-    image: auth-service:latest
-    container_name: auth-service
+    image: rahtek-backend:latest
+    container_name: rahtek-backend-container
     ports:
-    - '${PORT}:${PORT}' 
+      - "${PORT}:${PORT}"
     env_file:
       - ./.env
     environment:
       NODE_ENV: production
-      DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD}@mysql:3307/${MYSQL_DATABASE}
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: rahtek
       PORT: 4040
     depends_on:
-      - mysql
+      - postgres
     restart: unless-stopped
     command: ["dumb-init", "node", "dist/index.js"]
 
-  # MySQL Database
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
+  # PostgreSQL Database
+  postgres:
+    image: postgres:14-alpine
+    container_name: rahtek-db-container
     volumes:
-      - db-data:/var/lib/mysql
+      - db-data:/var/lib/rahtek-db-volume
     ports:
-      - '3307:3306'
+      - "5432:5432"
     environment:
-      # ! dont use root user in prod
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: root
-      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=rahtek
     env_file:
       - ./.env
     restart: always
