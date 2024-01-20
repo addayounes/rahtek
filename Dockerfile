@@ -48,14 +48,11 @@ RUN yarn install --frozen-lockfile --production=true && yarn cache clean
 # Copy the built application code from the build stage
 COPY --chown=nodejs:nodejs --from=build /app/dist ./dist
 
-# Copy the prisma directory from the build stage
-COPY --chown=nodejs:nodejs --from=build /app/prisma ./prisma
-
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Generate prisma client
-RUN yarn prisma generate
+# Copy the environment variables file
+COPY --chown=nodejs:nodejs .env.production .env
 
 # Expose port for the application to listen on
 EXPOSE 4040
