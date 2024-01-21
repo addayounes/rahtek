@@ -1,12 +1,14 @@
 import fs from "fs";
-import { Op } from "sequelize";
 import { randomUUID } from "crypto";
-import logger from "../middleware/logger";
-import { uploadPhoto } from "../utils/uploadPhoto";
-import { Equipment, IEquipmentAttributes } from "../models/equipment";
+import { Model, Op } from "sequelize";
 import { User } from "../models/user";
+import { LatLng } from "../types/types";
+import logger from "../middleware/logger";
 import { Category } from "../models/category";
+import { uploadPhoto } from "../utils/uploadPhoto";
 import { getPaginationOptions } from "../utils/pagination";
+import { Equipment, IEquipmentAttributes } from "../models/equipment";
+import { coordinatesInsideCircle } from "../utils/coordinatesInsideCircle";
 
 export const createEquipment = async (
   data: Omit<IEquipmentAttributes, "id" | "status">
@@ -103,12 +105,48 @@ export const getEquipments = async (options: any) => {
       pageSize: options?.pageSize,
     });
 
-    const result = await Equipment.findAndCountAll({
+    let result = await Equipment.findAndCountAll({
       where,
       include: { all: true },
       order: ["createdAt"],
       ...pagination,
     });
+
+    if (
+      options?.radius &&
+      options?.position?.latitude &&
+      options.position.longitude
+    ) {
+      result.rows = result.rows.reduce((acc, curr) => {
+        const { town } = curr.dataValues;
+
+        const circle = {
+          center: [
+            Number(options.position.latitude),
+            Number(options.position.longitude),
+          ] as LatLng,
+          radius: Number(options.radius),
+        };
+
+        console.log(
+          coordinatesInsideCircle(
+            [Number(town?.longitude), Number(town?.latitude)],
+            circle
+          ).distance
+        );
+
+        if (
+          coordinatesInsideCircle(
+            [Number(town?.longitude), Number(town?.latitude)],
+            circle
+          ).result
+        ) {
+          acc.push(curr);
+        }
+
+        return acc;
+      }, [] as Model<IEquipmentAttributes, {}>[]);
+    }
 
     return result;
   } catch (error: any) {
