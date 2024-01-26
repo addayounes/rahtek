@@ -13,9 +13,11 @@ services:
       - ./.env
     environment:
       NODE_ENV: production
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: rahtek
+      DB_PASSWORD: postgres
+      DB_USER: postgres
+      DB_DATABASE: rahtek
+      DB_HOST: rahtek-db-container
+      DB_PORT: 5432
       PORT: 8080
     depends_on:
       - postgres

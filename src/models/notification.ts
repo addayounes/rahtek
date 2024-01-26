@@ -21,7 +21,6 @@ export const Notification = sequelize.define<
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
     },
     from: {
       type: DataTypes.UUID,
