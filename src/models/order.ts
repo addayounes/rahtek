@@ -61,11 +61,11 @@ export const Order = sequelize.define<Model<IOrderAttributes, {}>>(
   }
 );
 
-User.hasMany(Order, { foreignKey: "id", onDelete: "CASCADE" });
+User.hasMany(Order, { foreignKey: "gaurantee_id", onDelete: "CASCADE" });
 Order.belongsTo(User, { foreignKey: "gaurantee_id" });
 
-Equipment.hasMany(Order, { foreignKey: "id", onDelete: "CASCADE" });
+Equipment.hasMany(Order, { foreignKey: "equipment_id", onDelete: "CASCADE" });
 Order.belongsTo(Equipment, { foreignKey: "equipment_id" });
 
-Patient.hasMany(Order, { foreignKey: "id", onDelete: "CASCADE" });
+Patient.hasMany(Order, { foreignKey: "patient_id", onDelete: "CASCADE" });
 Order.belongsTo(Patient, { foreignKey: "patient_id" });

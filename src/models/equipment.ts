@@ -67,8 +67,8 @@ export const Equipment = sequelize.define<Model<IEquipmentAttributes, {}>>(
   }
 );
 
-User.hasMany(Equipment, { foreignKey: "id", onDelete: "CASCADE" });
+User.hasMany(Equipment, { foreignKey: "published_by", onDelete: "CASCADE" });
 Equipment.belongsTo(User, { foreignKey: "published_by", as: "user" });
 
-Category.hasMany(Equipment, { foreignKey: "id", onDelete: "CASCADE" });
+Category.hasMany(Equipment, { foreignKey: "category_id", onDelete: "CASCADE" });
 Equipment.belongsTo(Category, { foreignKey: "category_id", as: "category" });

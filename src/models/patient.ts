@@ -35,7 +35,7 @@ export const Patient = sequelize.define<Model<IPatientAttributes, {}>>(
 );
 
 User.hasMany(Patient, {
-  foreignKey: "id",
+  foreignKey: "represented_by",
   as: "patients",
   onDelete: "CASCADE",
 });

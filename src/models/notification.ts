@@ -41,6 +41,8 @@ export const Notification = sequelize.define<
   { tableName: "Notifications", timestamps: true }
 );
 
-User.hasMany(Notification, { foreignKey: "id", onDelete: "CASCADE" });
-Notification.belongsTo(User, { foreignKey: "from", as: "from_user" });
+User.hasMany(Notification, { foreignKey: "to", onDelete: "CASCADE" });
 Notification.belongsTo(User, { foreignKey: "to", as: "to_user" });
+
+User.hasMany(Notification, { foreignKey: "from", onDelete: "CASCADE" });
+Notification.belongsTo(User, { foreignKey: "from", as: "from_user" });

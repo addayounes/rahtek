@@ -4,7 +4,7 @@ export const createSchema = {
   body: Joi.object().keys({
     first_name: Joi.string().required().min(2),
     last_name: Joi.string().required().min(2),
-    phone: Joi.string().required().min(6),
+    // phone: Joi.string(),
     address: Joi.string().min(2),
   }),
 };
@@ -16,7 +16,7 @@ export const updateSchema = {
   body: Joi.object().keys({
     first_name: Joi.string().min(2),
     last_name: Joi.string().min(2),
-    phone: Joi.string().min(6),
+    phone: Joi.string(),
     address: Joi.string().min(2),
   }),
 };
