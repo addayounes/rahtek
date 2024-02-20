@@ -6,8 +6,6 @@ export type RequireAtLeastOne<T> = {
     Partial<Pick<T, Exclude<keyof T, K>>>;
 }[keyof T];
 
-export type LatLng = [number, number];
-
 // More strictly typed express middleware type
 export type ExpressMiddleware<
   ReqBody = Record<string, unknown>,
