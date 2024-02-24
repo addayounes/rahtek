@@ -2,7 +2,9 @@ import fs from "fs";
 import { Op } from "sequelize";
 import { randomUUID } from "crypto";
 import { User } from "../models/user";
+import { Order } from "../models/order";
 import logger from "../middleware/logger";
+import { OrderStatus } from "../types/order";
 import { Category } from "../models/category";
 import { uploadPhoto } from "../utils/uploadPhoto";
 import { getPaginationOptions } from "../utils/pagination";
@@ -172,6 +174,20 @@ export const updateEquipmentPhoto = async (file: any) => {
     fs.unlinkSync(file.path);
 
     return { url: uploadResult };
+  } catch (error) {
+    logger.error(error);
+    return null;
+  }
+};
+
+export const getEquipmentWaitingList = async (id: string) => {
+  try {
+    const result = await Order.findAll({
+      where: { equipment_id: id, status: OrderStatus.PENDING },
+      include: { all: true },
+    });
+
+    return result;
   } catch (error) {
     logger.error(error);
     return null;

@@ -17,6 +17,7 @@ import {
   handleGetEquipmentById,
   handleGetEquipmentBySlug,
   handleGetCurrentUserEquipments,
+  handleGetEquipmentWaitingList,
 } from "../../controller/equipment.controller";
 import isAuth from "../../middleware/isAuth";
 import multer from "../../lib/multer";
@@ -42,6 +43,10 @@ equipmentRouter
 equipmentRouter
   .route("/details/:slug")
   .get(validate(getBySlugSchema), handleGetEquipmentBySlug);
+
+equipmentRouter
+  .route("/:id/waiting-list")
+  .get(validate(deleteSchema), handleGetEquipmentWaitingList);
 
 equipmentRouter
   .route("/user/:id")

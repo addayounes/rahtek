@@ -98,3 +98,12 @@ export const handleGetCategories = catchAsync(
     return res.json(result);
   }
 );
+
+export const handleGetEquipmentWaitingList = catchAsync(
+  async (req: any, res: Response) => {
+    const result = await equipmentService.getEquipmentWaitingList(
+      req.params.id
+    );
+    return res.json(result);
+  }
+);
