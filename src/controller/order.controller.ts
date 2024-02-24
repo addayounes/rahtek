@@ -42,6 +42,7 @@ export const handleApproveOrder = catchAsync(
 export const handleRefuseOrder = catchAsync(async (req: any, res: Response) => {
   const result = await orderService.updateOrder(req.params.id, {
     status: OrderStatus.REFUSED,
+    refusal_reason: req.body?.refusal_reason ?? null,
   });
   if (!result) return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   return res.json(result);

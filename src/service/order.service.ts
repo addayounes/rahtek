@@ -37,7 +37,9 @@ export const createOrder = async (data: Omit<IOrderAttributes, "status">) => {
 
 export const updateOrder = async (
   id: string,
-  data: Partial<Pick<IOrderAttributes, "return_date" | "status">>
+  data: Partial<
+    Pick<IOrderAttributes, "return_date" | "status" | "refusal_reason">
+  >
 ) => {
   try {
     const result = await Order.update(data, { where: { id } });
