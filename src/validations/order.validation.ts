@@ -8,6 +8,7 @@ export const createSchema = {
     equipment_id: Joi.string().required(),
     date: Joi.date().required(),
     return_date: Joi.date().required(),
+    comment: Joi.string().max(400).allow(""),
   }),
 };
 
@@ -29,6 +30,15 @@ export const updateSchema = {
 export const deleteSchema = {
   params: Joi.object().keys({
     id: Joi.string().required(),
+  }),
+};
+
+export const refuseSchema = {
+  params: Joi.object().keys({
+    id: Joi.string().required(),
+  }),
+  body: Joi.object().keys({
+    refusal_reason: Joi.string(),
   }),
 };
 

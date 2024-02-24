@@ -4,6 +4,7 @@ import {
   createSchema,
   deleteSchema,
   getSupplierEquipmentsSchema,
+  refuseSchema,
   updateSchema,
 } from "../../validations/order.validation";
 import {
@@ -29,7 +30,7 @@ orderRouter
 
 orderRouter
   .route("/:id/refuse")
-  .patch(isAuth, validate(deleteSchema), handleRefuseOrder);
+  .patch(isAuth, validate(refuseSchema), handleRefuseOrder);
 
 orderRouter
   .route("/:id/approve")
