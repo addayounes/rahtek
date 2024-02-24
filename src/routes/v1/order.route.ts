@@ -16,6 +16,7 @@ import {
   handleApproveOrder,
   handleFinishOrder,
   handleGetSupplierOrders,
+  handleGetOrderLogs,
 } from "../../controller/order.controller";
 import isAuth from "../../middleware/isAuth";
 
@@ -27,6 +28,10 @@ orderRouter
   .route("/:id")
   .patch(isAuth, validate(updateSchema), handleUpdateOrder)
   .delete(isAuth, validate(deleteSchema), handleDeleteOrder);
+
+orderRouter
+  .route("/:id/logs")
+  .get(isAuth, validate(deleteSchema), handleGetOrderLogs);
 
 orderRouter
   .route("/:id/refuse")

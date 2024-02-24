@@ -91,3 +91,10 @@ export const handleGetSupplierOrders = catchAsync(
     return res.json(result);
   }
 );
+
+export const handleGetOrderLogs = catchAsync(
+  async (req: any, res: Response) => {
+    const result = await orderService.getOrderLogs(req.params.id);
+    return res.json(result);
+  }
+);

@@ -2,10 +2,12 @@ import { randomUUID } from "crypto";
 import logger from "../middleware/logger";
 import { EVENTS } from "../utils/socketEvents";
 import { Equipment } from "../models/equipment";
+import { Notification } from "../models/notification";
 import { getEquipmentById } from "./equipment.service";
 import { Order, IOrderAttributes } from "../models/order";
 import { getPaginationOptions } from "../utils/pagination";
 import { createNotification } from "./notification.service";
+import { Op } from "sequelize";
 
 export const createOrder = async (data: Omit<IOrderAttributes, "status">) => {
   try {
@@ -104,6 +106,25 @@ export const getSupplierOrders = async (
         { all: true },
       ],
       ...pagination,
+    });
+
+    return result;
+  } catch (error: any) {
+    logger.error(error);
+    return { error: error?.message };
+  }
+};
+
+export const getOrderLogs = async (orderId: string) => {
+  try {
+    const result = await Notification.findAll({
+      where: {
+        payload: {
+          [Op.contains]: {
+            id: orderId,
+          },
+        },
+      },
     });
 
     return result;
