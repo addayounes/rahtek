@@ -185,6 +185,7 @@ export const getEquipmentWaitingList = async (id: string) => {
     const result = await Order.findAll({
       where: { equipment_id: id, status: OrderStatus.PENDING },
       include: { all: true },
+      order: [["createdAt", "DESC"]],
     });
 
     return result;
