@@ -11,6 +11,8 @@ export interface IOrderAttributes {
   gaurantee_id: string;
   equipment_id: string;
   date: string;
+  comment: string | undefined;
+  refusal_reason: string | undefined;
   return_date: string | null;
   status: OrderStatus;
 }
@@ -43,6 +45,8 @@ export const Order = sequelize.define<Model<IOrderAttributes, {}>>(
     },
     date: { type: DataTypes.DATEONLY, allowNull: false },
     return_date: { type: DataTypes.DATE, allowNull: true },
+    comment: { type: DataTypes.STRING, allowNull: true },
+    refusal_reason: { type: DataTypes.STRING, allowNull: true },
     status: {
       type: DataTypes.ENUM,
       allowNull: false,

@@ -30,6 +30,8 @@ module.exports = {
           onDelete: "CASCADE",
         },
         date: { type: Sequelize.DATEONLY, allowNull: false },
+        comment: { type: Sequelize.STRING, allowNull: true },
+        refusal_reason: { type: Sequelize.STRING, allowNull: true },
         return_date: { type: Sequelize.DATE, allowNull: true },
         status: {
           type: Sequelize.ENUM,
