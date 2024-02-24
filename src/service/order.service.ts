@@ -127,6 +127,7 @@ export const getOrderLogs = async (orderId: string) => {
           },
         },
       },
+      order: [["createdAt", "ASC"]],
     });
 
     return result;
