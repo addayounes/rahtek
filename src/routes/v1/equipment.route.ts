@@ -5,7 +5,6 @@ import {
   deleteSchema,
   getBySlugSchema,
   getSchema,
-  getUserEquipmentsSchema,
   updateSchema,
 } from "../../validations/equipment.validation";
 import {
@@ -50,7 +49,7 @@ equipmentRouter
 
 equipmentRouter
   .route("/user/:id")
-  .get(validate(getUserEquipmentsSchema), handleGetUserEquipments);
+  .get(validate(getSchema), handleGetUserEquipments);
 
 equipmentRouter
   .route("/current/user")
