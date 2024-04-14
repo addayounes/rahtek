@@ -17,6 +17,7 @@ import {
   handleGetEquipmentBySlug,
   handleGetCurrentUserEquipments,
   handleGetEquipmentWaitingList,
+  handleGetRahtekEquipments,
 } from "../../controller/equipment.controller";
 import isAuth from "../../middleware/isAuth";
 import multer from "../../lib/multer";
@@ -54,5 +55,9 @@ equipmentRouter
 equipmentRouter
   .route("/current/user")
   .get(isAuth, validate(getSchema), handleGetCurrentUserEquipments);
+
+equipmentRouter
+  .route("/rahtek/section")
+  .get(validate(getSchema), handleGetRahtekEquipments);
 
 export default equipmentRouter;

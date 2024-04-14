@@ -182,3 +182,26 @@ export const getEquipmentWaitingList = async (id: string) => {
     return null;
   }
 };
+
+export const getRahtekEquipments = async (options: any) => {
+  try {
+    const pagination = getPaginationOptions({
+      page: options?.page,
+      pageSize: options?.pageSize,
+    });
+
+    let result = await Equipment.findAndCountAll({
+      include: [
+        { all: true },
+        { model: User, where: { isRahtek: true }, as: "user" },
+      ],
+      order: ["createdAt"],
+      ...pagination,
+    });
+
+    return result;
+  } catch (error: any) {
+    logger.error(error);
+    return { error: error?.message };
+  }
+};

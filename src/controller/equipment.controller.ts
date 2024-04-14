@@ -107,3 +107,10 @@ export const handleGetEquipmentWaitingList = catchAsync(
     return res.json(result);
   }
 );
+
+export const handleGetRahtekEquipments = catchAsync(
+  async (req: any, res: Response) => {
+    const result = await equipmentService.getRahtekEquipments(req.query);
+    return res.json(result);
+  }
+);

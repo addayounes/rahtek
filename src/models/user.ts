@@ -1,6 +1,6 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/sequelize";
 import { UserRoles } from "../types/user";
+import sequelize from "../config/sequelize";
+import { DataTypes, Model } from "sequelize";
 import { ITown, IWilaya } from "../types/equipment";
 
 export interface IUserAttributes {
@@ -14,6 +14,7 @@ export interface IUserAttributes {
   slug: string;
   photo: string | null;
   identity_card: string | null;
+  isRahtek: boolean;
   role: UserRoles;
   password: string | null;
   googleId: string | null;
@@ -33,6 +34,11 @@ export const User = sequelize.define<Model<IUserAttributes, {}>>(
     slug: { type: DataTypes.STRING, allowNull: true },
     photo: { type: DataTypes.STRING, allowNull: true },
     identity_card: { type: DataTypes.STRING, allowNull: true },
+    isRahtek: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     role: {
       type: DataTypes.STRING,
       allowNull: false,
