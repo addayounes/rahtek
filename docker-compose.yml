@@ -13,30 +13,31 @@ services:
       - ./.env
     environment:
       NODE_ENV: production
-      DB_PASSWORD: postgres
-      DB_USER: postgres
-      DB_DATABASE: rahtek
-      DB_HOST: rahtek-db-container
-      DB_PORT: 5432
+      # DB_PASSWORD: postgres
+      # DB_USER: postgres
+      # DB_DATABASE: rahtek
+      # DB_HOST: rahtek-db-container
+      # DB_PORT: 5432
       PORT: 8080
-    depends_on:
-      - postgres
+    # depends_on:
+    #   - postgres
     restart: unless-stopped
 
   # PostgreSQL Database
-  postgres:
-    image: postgres:14-alpine
-    container_name: rahtek-db-container
-    volumes:
-      - db-data:/var/lib/rahtek-db-volume
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=rahtek
-    env_file:
-      - ./.env
-    restart: always
-volumes:
-  db-data:
+#   postgres:
+#     image: postgres:14-alpine
+#     container_name: rahtek-db-container
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
+#     ports:
+#       - "5432:5432"
+#     environment:
+#       - POSTGRES_PASSWORD=postgres
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_DB=rahtek
+#     env_file:
+#       - ./.env
+#     restart: always
+# volumes:
+#   db-data:
+# docker exec -it rahtek-db-container psql -U postgres rahtek

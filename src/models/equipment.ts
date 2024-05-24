@@ -33,9 +33,9 @@ export const Equipment = sequelize.define<Model<IEquipmentAttributes, {}>>(
     town: { type: DataTypes.JSONB, allowNull: true },
     slug: { type: DataTypes.STRING, allowNull: true, unique: true },
     status: {
-      type: DataTypes.ENUM,
+      type: DataTypes.TEXT,
       allowNull: false,
-      values: [EquipmentsStatus.AVAILABLE, EquipmentsStatus.TAKEN],
+      // values: [EquipmentsStatus.AVAILABLE, EquipmentsStatus.TAKEN],
       defaultValue: EquipmentsStatus.AVAILABLE,
     },
     category_id: {

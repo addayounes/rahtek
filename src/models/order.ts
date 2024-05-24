@@ -48,14 +48,14 @@ export const Order = sequelize.define<Model<IOrderAttributes, {}>>(
     comment: { type: DataTypes.STRING, allowNull: true },
     refusal_reason: { type: DataTypes.STRING, allowNull: true },
     status: {
-      type: DataTypes.ENUM,
+      type: DataTypes.TEXT,
       allowNull: false,
-      values: [
-        OrderStatus.PENDING,
-        OrderStatus.ONGOING,
-        OrderStatus.FINISHED,
-        OrderStatus.REFUSED,
-      ],
+      // values: [
+      //   OrderStatus.PENDING,
+      //   OrderStatus.ONGOING,
+      //   OrderStatus.FINISHED,
+      //   OrderStatus.REFUSED,
+      // ],
       defaultValue: OrderStatus.PENDING,
     },
   },

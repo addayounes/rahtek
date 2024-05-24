@@ -12,8 +12,9 @@ RUN apk add --no-cache --virtual .build-deps \
     gcc \
     g++ \
     python3 \
+    && apk add --update busybox-suid \
     && npm ci \
-    && apk del .build-deps
+    && apk del .build-deps 
 
 # Copy the rest of the application code to the container
 COPY . .

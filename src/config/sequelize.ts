@@ -9,6 +9,7 @@ const sequelize = new Sequelize(db.database, db.username, db.password, {
   port: db.port,
   dialect: "postgres",
   logging: false,
+  dialectOptions: { ssl: true },
 });
 
 logger.info("Connected to DB");

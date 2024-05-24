@@ -1,6 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/sequelize";
-import { TokenType } from "../types/token";
+// import { TokenType } from "../types/token";
 
 export interface IRefreshTokenAttributes {
   id: string;
@@ -22,9 +22,9 @@ export const RefreshToken = sequelize.define<
     },
     token: { type: DataTypes.STRING, allowNull: false },
     type: {
-      type: DataTypes.ENUM,
+      type: DataTypes.TEXT,
       allowNull: false,
-      values: [TokenType.REFRESH, TokenType.RESET, TokenType.REGISTER],
+      // values: [TokenType.REFRESH, TokenType.RESET, TokenType.REGISTER],
     },
     expiresAt: { type: DataTypes.DATE, allowNull: true },
     userId: {

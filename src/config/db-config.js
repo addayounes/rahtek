@@ -9,4 +9,5 @@ module.exports = {
   port: Number(DB_PORT),
   host: String(DB_HOST),
   dialect: "postgres",
+  dialectOptions: { ssl: true },
 };

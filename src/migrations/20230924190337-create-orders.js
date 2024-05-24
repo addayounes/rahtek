@@ -34,9 +34,9 @@ module.exports = {
         refusal_reason: { type: Sequelize.STRING, allowNull: true },
         return_date: { type: Sequelize.DATE, allowNull: true },
         status: {
-          type: Sequelize.ENUM,
+          type: Sequelize.TEXT,
           allowNull: false,
-          values: ["PENDING", "ONGOING", "FINISHED", "REFUSED"],
+          // values: ["PENDING", "ONGOING", "FINISHED", "REFUSED"],
           defaultValue: "PENDING",
         },
         createdAt: { type: Sequelize.DATE, allowNull: false },

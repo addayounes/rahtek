@@ -13,9 +13,9 @@ module.exports = {
         },
         token: { type: Sequelize.STRING, allowNull: false },
         type: {
-          type: Sequelize.ENUM,
+          type: Sequelize.TEXT,
           allowNull: false,
-          values: ["REFRESH", "RESET", "REGISTER"],
+          // values: ["REFRESH", "RESET", "REGISTER"],
         },
         expiresAt: { type: Sequelize.DATE, allowNull: true },
         userId: {
